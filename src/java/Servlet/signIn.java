@@ -28,45 +28,57 @@ public class signIn extends HttpServlet {
             ps.setString(1, username);
             ps.setString(2, pass);
             rs = ps.executeQuery();
+            Blob photo = null;
+            String base64Image = "";
 
-            String base64Image;
-        
             if (rs.next()) {
                 HttpSession httpSession = request.getSession();
                 httpSession.setAttribute("username", username);
 
+                char level = rs.getString("level").charAt(0);
                 char gender = rs.getString("gender").charAt(0);
                 String birthDate = rs.getString("birthDate");
                 String regDate = rs.getString("regDate");
                 String email = rs.getString("email");
                 String phoneNumber = rs.getString("phoneNumber");
-                Blob photo = rs.getBlob("photo");
+
+                photo = rs.getBlob("photo");
                 
-                InputStream inputStream = photo.getBinaryStream();
-                
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                byte[] buffer = new byte[4096];
-                int bytesRead = -1;
-                 
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, bytesRead);                  
+                if (photo != null) {
+
+                    InputStream inputStream = photo.getBinaryStream();
+
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                    byte[] buffer = new byte[4096];
+                    int bytesRead = -1;
+
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+
+                    byte[] imageBytes = outputStream.toByteArray();
+                    base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+                    httpSession.setAttribute("photo", base64Image);
                 }
-                 
-                byte[] imageBytes = outputStream.toByteArray();
-                base64Image = Base64.getEncoder().encodeToString(imageBytes);
                 
+                out.println("hi");
                 httpSession.setAttribute("regDate", regDate);
                 httpSession.setAttribute("gender", gender);
                 httpSession.setAttribute("birthDate", birthDate);
                 httpSession.setAttribute("password", rs.getString("password"));
                 httpSession.setAttribute("email", email);
                 httpSession.setAttribute("phoneNumber", phoneNumber);
-                httpSession.setAttribute("photo", base64Image);
 
-                response.sendRedirect("admin/adminT/adminDashboard.jsp");
+                if (level == 'A') {
+                    response.sendRedirect("main/adminT/adminDashboard.jsp");
+                } else if (level == 'C') {
+                    response.sendRedirect("main/customer/index.html");
+                }
+
             } else {
                 out.println("Username or Password incorrect");
-                response.sendRedirect("admin/adminT/forms/login.jsp");
+                response.sendRedirect("main/adminT/forms/login.jsp");
             }
 
         } catch (Exception e) {

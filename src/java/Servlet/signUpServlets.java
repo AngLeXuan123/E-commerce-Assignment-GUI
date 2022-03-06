@@ -72,7 +72,7 @@ public class signUpServlets extends HttpServlet {
                 try {
                     storeAccount(id, pass, gender, birthDate, regDate, email, phoneNumber, level, inputStream);
                     out.println("Congratulation " + id + ", your registration is successful! \n");
-                    out.print("<a href='admin/adminT/forms/login.html'>Go back to login page -></a>");
+                    out.print("<a href='main/adminT/forms/login.jsp'>Go back to login page -></a>");
                 } catch (SQLException ex) {
                     Logger.getLogger(signUpServlets.class.getName()).log(Level.SEVERE, null, ex);
                 }

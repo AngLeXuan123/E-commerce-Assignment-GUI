@@ -86,7 +86,7 @@ public class editProfile extends HttpServlet {
                 httpSession.setAttribute("email", email);
                 httpSession.setAttribute("phoneNumber", phoneNumber);
                 httpSession.setAttribute("photo", base64Image);
-                response.sendRedirect("admin/adminT/forms/profile.jsp");
+                response.sendRedirect("main/adminT/forms/profile.jsp");
             }
         } catch (SQLException ex) {
             out.println("ERROR: " + ex.getMessage());
