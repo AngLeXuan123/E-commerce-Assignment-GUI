@@ -47,7 +47,7 @@
                     <div class="text-center">
                         <h1 class="h4 text-gray-900 mb-4">Edit your account, <%= username %> ?</h1>
                     </div>
-                    <form method="post" action="http://localhost:8080/E-commerce-GUI-Assignment/editProfile" enctype="multipart/form-data" >
+                    <form method="post" action="http://localhost:8080/E-commerce-Assignment-GUI/editProfile" enctype="multipart/form-data" >
                         <div class="form-group">
                             <input type="email" class="form-control" name="email" id="email" value="<%= email %>"
                                 >
