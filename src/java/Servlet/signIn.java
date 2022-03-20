@@ -69,11 +69,12 @@ public class signIn extends HttpServlet {
                 httpSession.setAttribute("password", rs.getString("password"));
                 httpSession.setAttribute("email", email);
                 httpSession.setAttribute("phoneNumber", phoneNumber);
+                httpSession.setAttribute("level", level);
 
                 if (level == 'A') {
                     response.sendRedirect("main/adminT/adminDashboard.jsp");
                 } else if (level == 'C') {
-                    response.sendRedirect("main/customer/index.html");
+                    response.sendRedirect("main/customer/index.jsp");
                 }
 
             } else {
