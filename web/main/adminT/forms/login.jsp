@@ -38,7 +38,7 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                 </div>
-                                <form class="user" method="post" action="http://localhost:8080/E-commerce-GUI-Assignment/signIn">
+                                <form class="user" method="post" action="http://localhost:8080/E-commerce-Assignment-GUI/signIn">
                                     <div class="form-group">
                                         <input type="text" class="form-control form-control-user" id="exampleInputEmail"
                                                aria-describedby="emailHelp" placeholder="Enter Username..." name="username">
