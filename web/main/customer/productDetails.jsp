@@ -58,7 +58,7 @@
                 <p>Price : <%= rs.getString("prod_price") %> </p>
                 <p>Stock left : <%= rs.getString("prod_quantity") %> </p>
                 <p>Brand : <%= rs.getString("prod_brand") %> </p>
-                <br><a href="cart.jsp?prod=<%= prodId %>"><button type=\"button\">Add to cart</button></a>
+                <br><a href="http://localhost:8080/E-commerce-Assignment-GUI/cart?prod=<%= prodId %>"><button type=\"button\">Add to cart</button></a>
                 <%
             }
         } catch (Exception e) {
