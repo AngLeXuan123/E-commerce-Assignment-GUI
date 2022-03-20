@@ -403,7 +403,7 @@
                                 base64Image = Base64.getEncoder().encodeToString(imageBytes);
                                 }
                                 %>
-                                <tr><td><img width="50" height="50" src="data:image/jpg;base64,<%= base64Image %>"><%= rs.getString("id") %></td></tr>
+                                <tr><td><img width="50" height="50" src="data:image/jpg;base64,<%= base64Image %>"><%= rs.getString("id") %><a class="btn btn-outline-dark mt-auto" href="forms/editStaff.jsp?id=<%= rs.getString("id") %>">Edit profile</a></div></td></tr>
                                 <%
                                 } } catch (Exception e) {
                                 e.printStackTrace();

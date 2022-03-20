@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
-public class editProfile extends HttpServlet {
+public class editStaff extends HttpServlet {
 
     private Connection conn;
     private PreparedStatement pstmt;
@@ -33,11 +33,8 @@ public class editProfile extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-
-        String base64Image; 
         
-        HttpSession httpSession = request.getSession();
-        String username = (String)httpSession.getAttribute("username");
+        String username = request.getParameter("username");
         String pass = request.getParameter("password");
         String email = request.getParameter("email");
         String phoneNumber = request.getParameter("phoneNumber");        
@@ -46,25 +43,11 @@ public class editProfile extends HttpServlet {
         InputStream input = null;
         
         Part filePart = request.getPart("photo");
-        if (filePart != null) {
-            System.out.println(filePart.getName());
-            System.out.println(filePart.getSize());
-            System.out.println(filePart.getContentType());
-
-            inputStream = filePart.getInputStream();
-            input = filePart.getInputStream();
-        }
         
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[4096];
-        int bytesRead = -1;
-                 
-        while ((bytesRead = inputStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, bytesRead);                  
-        }
-                 
-        byte[] imageBytes = outputStream.toByteArray();
-        base64Image = Base64.getEncoder().encodeToString(imageBytes);
+        inputStream = filePart.getInputStream();
+        input = filePart.getInputStream();
+        
+       
 
         try {
             if (pass.length() == 0 || email.length() == 0 || phoneNumber.length() == 0) {
@@ -74,11 +57,7 @@ public class editProfile extends HttpServlet {
 
             if (errorCount == 0) {
                 editAccount(pass, email, phoneNumber, input, username);
-                httpSession.setAttribute("password", pass);
-                httpSession.setAttribute("email", email);
-                httpSession.setAttribute("phoneNumber", phoneNumber);
-                httpSession.setAttribute("photo", base64Image);
-                response.sendRedirect("main/adminT/forms/profile.jsp");
+                response.sendRedirect("main/adminT/staff.jsp");
             }
         } catch (SQLException ex) {
             out.println("ERROR: " + ex.getMessage());
