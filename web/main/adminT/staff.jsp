@@ -13,7 +13,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>SB Admin 2 - Buttons</title>
+        <title>SB Admin 2 - Staffs</title>
 
         <!-- Custom fonts for this template-->
         <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -80,13 +80,12 @@
                     <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
                        aria-controls="collapseTwo">
                         <i class="fas fa-fw fa-cog"></i>
-                        <span>Components</span>
+                        <span>Manage</span>
                     </a>
                     <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Custom Components:</h6>
-                            <a class="collapse-item active" href="buttons.html">Buttons</a>
+                            <a class="collapse-item active" href="staff.jsp">Staffs</a>
                             <a class="collapse-item" href="cards.html">Cards</a>
                         </div>
                     </div>
@@ -379,7 +378,7 @@
                     <div class="container-fluid">
 
                         <!-- Page Heading -->
-                        <h1 class="h3 mb-4 text-gray-800">Buttons</h1>
+                        <h1 class="h3 mb-4 text-gray-800">Staffs</h1>
 
                         <div class="content">
                             <table>
