@@ -32,7 +32,7 @@
     </servlet>
     <servlet>
         <servlet-name>cart</servlet-name>
-        <servlet-class>Servlet.cart</servlet-class>
+        <servlet-class>Servlet.addToCart</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>editStaff</servlet-name>

@@ -22,16 +22,24 @@
             } catch (ClassNotFoundException e) {
             e.printStackTrace();
             }
-            
-            ResultSet rs = null;
+            int count = 0;
+            ResultSet rs = null, rs2 = null, rs3 = null;
             HttpSession httpSession = request.getSession();
             String username = (String)(httpSession.getAttribute("username"));
             String photo = (String)(httpSession.getAttribute("photo"));
             try {
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
             PreparedStatement ps = con.prepareStatement("select * from product");
+            PreparedStatement ps2 = con.prepareStatement("select * from cart_item where id = ?");
+            ps2.setString(1, username);
+            
             rs = ps.executeQuery();
+            rs2 = ps2.executeQuery();
             String base64Image = "";
+            
+            while(rs2.next()) {
+                count++;
+            }
         %>
     </head>
     <body>
@@ -58,7 +66,7 @@
                         <button class="btn btn-outline-dark" type="submit">
                             <i class="bi-cart-fill me-1"></i>
                             Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                            <span class="badge bg-dark text-white ms-1 rounded-pill"><%= count %></span>
                         </button>
                     </form>
                 </div>
@@ -109,13 +117,28 @@
                                     <!-- Product name-->
                                     <h5 class="fw-bolder"><%= rs.getString("PROD_NAME") %></h5>
                                     <!-- Product price-->
-                                    <%= rs.getString("PROD_PRICE") %>
+                                    RM<%= rs.getString("PROD_PRICE") %>
                                 </div>
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="productDetails.jsp?prod=<%= rs.getString("PROD_ID") %>">View details</a></div><br>
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="http://localhost:8080/E-commerce-Assignment-GUI/cart?prod=<%= rs.getString("PROD_ID") %>">Add to cart</a></div>
+                                <%  
+                                rs3 = ps2.executeQuery();
+                                int count2 = 0;
+                                while(rs3.next()) {
+                                    if(rs3.getString("PROD_ID").equals(rs.getString("PROD_ID")) == true) { 
+                                        count2++;
+                                    } 
+                                }
+                                if(count2 > 0) {
+                                    %><div class="text-center"><a class="btn btn-outline-dark mt-auto" disabled>Already in cart</a></div><%
+                                }
+                                else {
+                                %> <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="http://localhost:8080/E-commerce-Assignment-GUI/cart?id=<%= rs.getString("PROD_ID") %>">Add to cart</a></div> <%
+                                } 
+                                %>
+                                
                             </div>
                         </div>
                     </div>
