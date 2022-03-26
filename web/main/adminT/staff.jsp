@@ -34,6 +34,8 @@
             HttpSession httpSession = request.getSession();
             String username = (String)(httpSession.getAttribute("username"));
             String photo = (String)(httpSession.getAttribute("photo"));
+            String levelString = (String)(httpSession.getAttribute("level"));
+            char level = levelString.charAt(0);
             try {
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
             PreparedStatement ps = con.prepareStatement("select * from account where level = 'S'");
@@ -51,7 +53,7 @@
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Sidebar - Brand -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="adminDashboard.jsp">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-laugh-wink"></i>
                     </div>
@@ -63,7 +65,7 @@
 
                 <!-- Nav Item - Dashboard -->
                 <li class="nav-item">
-                    <a class="nav-link" href="index.html">
+                    <a class="nav-link" href="adminDashboard.jsp">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>Dashboard</span></a>
                 </li>
@@ -86,8 +88,10 @@
                     <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item active" href="staff.jsp">Staffs</a>
-                            <a class="collapse-item" href="cards.html">Cards</a>
+                            <% if (Character.compare(level, 'A') == 0) { %>
+                            <a class="collapse-item" href="staff.jsp">Staff</a>
+                            <% } %>
+                            <a class="collapse-item" href="cards.html">Product</a>
                         </div>
                     </div>
                 </li>
