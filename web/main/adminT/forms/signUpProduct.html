@@ -1,14 +1,8 @@
-<%-- 
-    Document   : editProfile
-    Created on : 3 Mar 2022, 8:29:55 pm
-    Author     : user
---%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
+    
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -31,41 +25,40 @@
 <body class="bg-gradient-primary">
 
     <div class="container">
-        
-        <% HttpSession httpSession = request.getSession();
-           String username = (String)(httpSession.getAttribute("username"));
-           String email = (String)(httpSession.getAttribute("email"));
-           String phoneNumber = (String)(httpSession.getAttribute("phoneNumber"));
-           String birthDate = (String)(httpSession.getAttribute("birthDate"));
-           String password = (String)(httpSession.getAttribute("password"));
-        %>
 
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
                 <div class="p-5">
                     <div class="text-center">
-                        <h1 class="h4 text-gray-900 mb-4">Edit your account, <%= username %> ?</h1>
+                        <h1 class="h4 text-gray-900 mb-4">Create new product!</h1>
                     </div>
-                    <form method="post" action="http://localhost:8080/E-commerce-Assignment-GUI/editProfile" enctype="multipart/form-data" >
+                    <form method="post" action="http://localhost:8080/E-commerce-Assignment-GUI/signUpProduct" enctype="multipart/form-data" >
                         <div class="form-group">
-                            <input type="email" class="form-control" name="email" id="email" value="<%= email %>" required>
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Product name" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="phoneNumber" id="phoneNumber" value="<%= phoneNumber %>" required> 
+                            <input type="text" class="form-control" name="desc" id="desc" placeholder="Description" required> 
                         </div>                        
                         <div class="form-group">
-                            <input type="text" class="form-control" name="password" id="password" value="<%= password %>" required>
+                            <input type="number" step="0.01" class="form-control" name="price" id="price" placeholder="Price" required>
                         </div>
-                        
+                        <div class="form-group">
+                            <input type="number" step="1" class="form-control" name="quantity" id="quantity" placeholder="Stock left" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="brand" id="brand" placeholder="Brand" required> 
+                        </div> 
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="category" id="category" placeholder="Category"  required> 
+                        </div>  
                         <div class="form-group">
                             <input type="file" class="form-control" name="photo" id="photo" accept="image/*" required>
                         </div>
-
-                        <input type="submit" value="Confirm" class="btn btn-primary btn-user btn-block">
+                        
+                        <input type="submit" value="Submit" class="btn btn-primary btn-user btn-block">
                     </form>
                     <hr>
- 
                 </div>
             </div>
         </div>

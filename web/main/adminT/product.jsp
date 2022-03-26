@@ -38,7 +38,7 @@
             char level = levelString.charAt(0);
             try {
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
-            PreparedStatement ps = con.prepareStatement("select * from account where level = 'S'");
+            PreparedStatement ps = con.prepareStatement("select * from product");
             rs = ps.executeQuery();
             String base64Image = "";
         %>
@@ -383,14 +383,14 @@
                     <div class="container-fluid">
 
                         <!-- Page Heading -->
-                        <h1 class="h3 mb-4 text-gray-800">Staffs</h1>
-                        <a class="btn btn-outline-dark mt-auto" href="forms/signUpStaff.html">Create new staff</a>
+                        <h1 class="h3 mb-4 text-gray-800">Products</h1>
+                        <a class="btn btn-outline-dark mt-auto" href="forms/signUpProduct.html">Create new product</a>
                         <div class="content">
                             <table>
                                 <%
                                 while (rs.next()) {
                                 Blob pic;
-                                pic = rs.getBlob("photo");
+                                pic = rs.getBlob("prod_photo");
                 
                                 if (pic != null) {
 
@@ -408,10 +408,10 @@
                                 base64Image = Base64.getEncoder().encodeToString(imageBytes);
                                 }
                                 %>
-                                <tr><td><img width="50" height="50" src="data:image/jpg;base64,<%= base64Image %>"><%= rs.getString("id") %>
-                                <a class="btn btn-outline-dark mt-auto" href="staffProfile.jsp?id=<%= rs.getString("id") %>">View staff</a>
-                                <a class="btn btn-outline-dark mt-auto" href="forms/editStaff.jsp?id=<%= rs.getString("id") %>">Edit profile</a>
-                                <a class="btn btn-outline-dark mt-auto" href="http://localhost:8080/E-commerce-Assignment-GUI/deleteStaff?id=<%= rs.getString("id") %>">Delete profile</a></td></tr></div>
+                                <tr><td><img width="50" height="50" src="data:image/jpg;base64,<%= base64Image %>"><%= rs.getString("prod_name") %>
+                                <a class="btn btn-outline-dark mt-auto" href="viewProduct.jsp?id=<%= rs.getString("prod_id") %>">View product</a>
+                                <a class="btn btn-outline-dark mt-auto" href="forms/editProduct.jsp?id=<%= rs.getString("prod_id") %>">Edit product</a>
+                                <a class="btn btn-outline-dark mt-auto" href="http://localhost:8080/E-commerce-Assignment-GUI/deleteProduct?id=<%= rs.getString("prod_id") %>">Delete product</a></td></tr></div>
                                 <%
                                 } } catch (Exception e) {
                                 e.printStackTrace();

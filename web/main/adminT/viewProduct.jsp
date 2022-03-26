@@ -30,7 +30,7 @@
             ResultSet rs = null;
             try {
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
-            PreparedStatement ps = con.prepareStatement("select * from account where id = ?");
+            PreparedStatement ps = con.prepareStatement("select * from product where prod_id = ?");
             ps.setString(1, id);
             rs = ps.executeQuery();
             
@@ -40,8 +40,8 @@
             
             while (rs.next()) {
                 
-Blob pic;
-            pic = rs.getBlob("photo");
+            Blob pic;
+            pic = rs.getBlob("prod_photo");
            
             if (pic != null) {
 
@@ -61,14 +61,22 @@ Blob pic;
         %>
         <div class='solid'>
             <img src="data:image/jpg;base64,<%= base64Image %>" width="240" height="300"/>
-            <p>Username : <%= rs.getString("id") %> </p>
-            <p>Gender : <%= rs.getString("gender") %> </p>
-            <p>Registration Date : <%= rs.getString("regDate") %> </p>
-            <p>Birth Date : <%= rs.getString("birthDate") %> </p>
-            <p>Email : <%= rs.getString("email") %> </p>
-            <p>Phone Number : <%= rs.getString("phoneNumber") %> </p>
-            <br><a href="forms/editStaff.jsp?id=<%= id %>"><button type=\"button\">Edit Profile</button></a>
-            <br><a href="http://localhost:8080/E-commerce-Assignment-GUI/deleteStaff?id=<%= rs.getString("id") %>"><button type=\"button\">Delete profile</button></a>
+            <p>Name : <%= rs.getString("prod_name") %> </p>
+            <p>Description : <%= rs.getString("prod_desc") %> </p>
+            <p>Price : <%= rs.getString("prod_price") %> </p>
+            <p>Quantity : <%= rs.getString("prod_quantity") %> </p>
+            <p>Release Date : <%= rs.getString("prod_release") %> </p>
+            <p>Brand : <%= rs.getString("prod_brand") %> </p>
+            <p>Category : 
+            <%
+            if(rs.getString("prod_category").charAt(0) == 'L') {
+            %>
+            Laptop
+            <%
+            }
+            %>
+            <br><a href="forms/editProduct.jsp?id=<%= id %>"><button type=\"button\">Edit Product</button></a>
+            <br><a href="http://localhost:8080/E-commerce-Assignment-GUI/deleteProduct?id=<%= id %>"><button type=\"button\">Delete Product</button></a>
         </div>
 
         <%

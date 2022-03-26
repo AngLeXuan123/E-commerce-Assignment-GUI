@@ -56,6 +56,28 @@
             <file-size-threshold>5242880</file-size-threshold>
         </multipart-config>
     </servlet>
+    <servlet>
+        <servlet-name>editProduct</servlet-name>
+        <servlet-class>Servlet.editProduct</servlet-class>
+        <multipart-config>
+            <max-file-size>10485760</max-file-size>
+            <max-request-size>20971520</max-request-size>
+            <file-size-threshold>5242880</file-size-threshold>
+        </multipart-config>
+    </servlet>
+    <servlet>
+        <servlet-name>deleteProduct</servlet-name>
+        <servlet-class>Servlet.deleteProduct</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>signUpProduct</servlet-name>
+        <servlet-class>Servlet.signUpProduct</servlet-class>
+        <multipart-config>
+            <max-file-size>10485760</max-file-size>
+            <max-request-size>20971520</max-request-size>
+            <file-size-threshold>5242880</file-size-threshold>
+        </multipart-config>
+    </servlet>
     <servlet-mapping>
         <servlet-name>signUpServlet</servlet-name>
         <url-pattern>/signUpServlet</url-pattern>
@@ -91,6 +113,18 @@
     <servlet-mapping>
         <servlet-name>signUpStaff</servlet-name>
         <url-pattern>/signUpStaff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editProduct</servlet-name>
+        <url-pattern>/editProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>deleteProduct</servlet-name>
+        <url-pattern>/deleteProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>signUpProduct</servlet-name>
+        <url-pattern>/signUpProduct</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

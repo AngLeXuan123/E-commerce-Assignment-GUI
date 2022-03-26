@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
-public class editStaff extends HttpServlet {
+public class editProduct extends HttpServlet {
 
     private Connection conn;
     private PreparedStatement pstmt;
@@ -34,30 +34,30 @@ public class editStaff extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         
-        String username = request.getParameter("username");
-        String pass = request.getParameter("password");
-        String email = request.getParameter("email");
-        String phoneNumber = request.getParameter("phoneNumber");        
+        String id = request.getParameter("id");
         
+        String name = request.getParameter("name");
+        String desc = request.getParameter("desc");
+        String priceString = request.getParameter("price");
+        double price = Double.parseDouble(priceString);
+        String quantityString = request.getParameter("quantity");        
+        int quantity = Integer.parseInt(quantityString);
+        String brand = request.getParameter("brand");
+        String category = request.getParameter("category");
+         
         InputStream inputStream = null;
-
-        
         Part filePart = request.getPart("photo");
-        
         inputStream = filePart.getInputStream();
-
-        
-       
-
+               
         try {
-            if (pass.length() == 0 || email.length() == 0 || phoneNumber.length() == 0) {
+            if (name.length() == 0 || desc.length() == 0 || brand.length() == 0 || category.length() == 0) {
                 out.println("Please fill out all the fields!");
                 errorCount++;
             }
 
             if (errorCount == 0) {
-                editAccount(pass, email, phoneNumber, inputStream, username);
-                response.sendRedirect("main/adminT/staff.jsp");
+                editAccount(name, desc, price, quantity, inputStream, brand, category, id);
+                response.sendRedirect("main/adminT/product.jsp");
             }
         } catch (SQLException ex) {
             out.println("ERROR: " + ex.getMessage());
@@ -68,18 +68,21 @@ public class editStaff extends HttpServlet {
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             conn = DriverManager.getConnection(host, user, password);
-            pstmt = conn.prepareStatement("update account set password = ?, email = ?, phoneNumber = ?, photo = ? where id = ?");
+            pstmt = conn.prepareStatement("update product set prod_name = ?, prod_desc = ?, prod_price = ?, prod_quantity = ?, prod_photo = ?, prod_brand = ?, prod_category = ? where prod_id = ?");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    private void editAccount(String pass, String email, String phoneNumber, InputStream photo, String username) throws SQLException {
-        pstmt.setString(1, pass);
-        pstmt.setString(2, email);
-        pstmt.setString(3, phoneNumber);
-        pstmt.setBlob(4, photo);
-        pstmt.setString(5, username);
+    private void editAccount(String name, String desc, double price, int quantity, InputStream photo, String brand, String category, String id) throws SQLException {
+        pstmt.setString(1, name);
+        pstmt.setString(2, desc);
+        pstmt.setString(3, String.valueOf(price));
+        pstmt.setString(4, String.valueOf(quantity));
+        pstmt.setBlob(5, photo);
+        pstmt.setString(6, brand);
+        pstmt.setString(7, category);
+        pstmt.setString(8, id);
         pstmt.executeUpdate();
     }
 

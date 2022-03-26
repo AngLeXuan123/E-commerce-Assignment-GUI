@@ -74,7 +74,7 @@
                             <% if (Character.compare(level, 'A') == 0) { %>
                             <a class="collapse-item" href="staff.jsp">Staff</a>
                             <% } %>
-                            <a class="collapse-item" href="cards.html">Product</a>
+                            <a class="collapse-item" href="product.jsp">Product</a>
                         </div>
                     </div>
                 </li>
