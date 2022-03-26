@@ -76,11 +76,6 @@
                                 >
                         </div>
                         <div class="form-group">
-                            <label for="birthDate">Birthday:</label>
-                            <input type="date" id="birthDate" name="birthDate" value="<%= rs.getString("birthDate") %>" class="form-control" required>
-                        </div>
-                        
-                        <div class="form-group">
                             <input type="text" class="form-control" name="password" id="password" value="<%= rs.getString("password") %>" required>
                         </div>
                         

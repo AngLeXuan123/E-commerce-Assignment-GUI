@@ -29,6 +29,7 @@
             e.printStackTrace();
             }
             
+            
             ResultSet rs = null;
             HttpSession httpSession = request.getSession();
             String username = (String)(httpSession.getAttribute("username"));
@@ -349,7 +350,7 @@
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="forms/profile.jsp">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Profile
                                     </a>
@@ -379,7 +380,7 @@
 
                         <!-- Page Heading -->
                         <h1 class="h3 mb-4 text-gray-800">Staffs</h1>
-
+                        <a class="btn btn-outline-dark mt-auto" href="forms/signUpStaff.html">Create new staff</a>
                         <div class="content">
                             <table>
                                 <%
@@ -403,7 +404,10 @@
                                 base64Image = Base64.getEncoder().encodeToString(imageBytes);
                                 }
                                 %>
-                                <tr><td><img width="50" height="50" src="data:image/jpg;base64,<%= base64Image %>"><%= rs.getString("id") %><a class="btn btn-outline-dark mt-auto" href="forms/editStaff.jsp?id=<%= rs.getString("id") %>">Edit profile</a></div></td></tr>
+                                <tr><td><img width="50" height="50" src="data:image/jpg;base64,<%= base64Image %>"><%= rs.getString("id") %>
+                                <a class="btn btn-outline-dark mt-auto" href="staffProfile.jsp?id=<%= rs.getString("id") %>">View staff</a>
+                                <a class="btn btn-outline-dark mt-auto" href="forms/editStaff.jsp?id=<%= rs.getString("id") %>">Edit profile</a>
+                                <a class="btn btn-outline-dark mt-auto" href="http://localhost:8080/E-commerce-Assignment-GUI/deleteStaff?id=<%= rs.getString("id") %>">Delete profile</a></td></tr></div>
                                 <%
                                 } } catch (Exception e) {
                                 e.printStackTrace();

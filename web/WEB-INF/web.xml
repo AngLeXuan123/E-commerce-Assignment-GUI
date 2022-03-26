@@ -43,6 +43,19 @@
             <file-size-threshold>5242880</file-size-threshold>
         </multipart-config>
     </servlet>
+    <servlet>
+        <servlet-name>deleteStaff</servlet-name>
+        <servlet-class>Servlet.deleteStaff</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>signUpStaff</servlet-name>
+        <servlet-class>Servlet.signUpStaff</servlet-class>
+        <multipart-config>
+            <max-file-size>10485760</max-file-size>
+            <max-request-size>20971520</max-request-size>
+            <file-size-threshold>5242880</file-size-threshold>
+        </multipart-config>
+    </servlet>
     <servlet-mapping>
         <servlet-name>signUpServlet</servlet-name>
         <url-pattern>/signUpServlet</url-pattern>
@@ -70,6 +83,14 @@
     <servlet-mapping>
         <servlet-name>editStaff</servlet-name>
         <url-pattern>/editStaff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>deleteStaff</servlet-name>
+        <url-pattern>/deleteStaff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>signUpStaff</servlet-name>
+        <url-pattern>/signUpStaff</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
