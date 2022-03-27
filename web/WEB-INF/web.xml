@@ -78,6 +78,18 @@
             <file-size-threshold>5242880</file-size-threshold>
         </multipart-config>
     </servlet>
+    <servlet>
+        <servlet-name>addQuantity</servlet-name>
+        <servlet-class>Servlet.addQuantity</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>minusQuantity</servlet-name>
+        <servlet-class>Servlet.minusQuantity</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>checkout</servlet-name>
+        <servlet-class>Servlet.checkout</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>signUpServlet</servlet-name>
         <url-pattern>/signUpServlet</url-pattern>
@@ -125,6 +137,18 @@
     <servlet-mapping>
         <servlet-name>signUpProduct</servlet-name>
         <url-pattern>/signUpProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>addQuantity</servlet-name>
+        <url-pattern>/addQuantity</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>minusQuantity</servlet-name>
+        <url-pattern>/minusQuantity</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>checkout</servlet-name>
+        <url-pattern>/checkout</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

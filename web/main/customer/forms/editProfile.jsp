@@ -1,35 +1,37 @@
 <%-- 
-    Document   : productDetails
-    Created on : 20 Mar 2022, 7:22:33 pm
+    Document   : editProfile
+    Created on : 3 Mar 2022, 8:29:55 pm
     Author     : user
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
-    <head>
-        <%@ page import="java.io.*" %>
-        <%@ page import="javax.servlet.*" %>
-        <%@ page import="javax.servlet.http.*" %>
-        <%@ page import="java.sql.*" %>
-        <%@ page import="java.util.*" %>
-        <meta charset="utf-8" />
+<html lang="en">
+
+<head>
+    <%@ page import="java.io.*" %>
+    <%@ page import="javax.servlet.*" %>
+    <%@ page import="javax.servlet.http.*" %>
+    <%@ page import="java.sql.*" %>
+    <%@ page import="java.util.*" %>
+    <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+
+    <title>SB Admin 2 - Register</title>
+
+    <!-- Custom fonts for this template-->
+    
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/styles.css" rel="stylesheet" />
+        <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
-        <title>JSP Page</title>
-    </head>
-    
-    <% String prodId = request.getParameter("prod");
-        try {
+</head>
+<%try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -40,11 +42,9 @@
         String username = (String)(httpSession.getAttribute("username"));
         try {
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
-            PreparedStatement ps = con.prepareStatement("select * from product where prod_id = ?");
             PreparedStatement ps2 = con.prepareStatement("select * from cart_item where id = ?");
             ps2.setString(1, username);
-            ps.setString(1, prodId);
-            rs = ps.executeQuery();
+   
             rs2 = ps2.executeQuery();
             
             
@@ -52,41 +52,24 @@
                 count++;
             }
  
-            String base64Image = "";
-
-            if (rs.next()) {
-                Blob pic;
-                pic = rs.getBlob("prod_photo");
-
-                if (pic != null) {
-
-                    InputStream inputStream = pic.getBinaryStream();
-
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    byte[] buffer = new byte[4096];
-                    int bytesRead = -1;
-
-                    while ((bytesRead = inputStream.read(buffer)) != -1) {
-                        outputStream.write(buffer, 0, bytesRead);
-                    }
-
-                    byte[] imageBytes = outputStream.toByteArray();
-                    base64Image = Base64.getEncoder().encodeToString(imageBytes);
-                }
-                
-                %>
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    %>
+<body class="bg-gradient-primary">
+<!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container px-4 px-lg-5">
                 <a class="navbar-brand" href="#!">Start Bootstrap</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.jsp">Home</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="../index.jsp">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Account</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="profile.jsp">Profile</a></li>
+                                <li><a class="dropdown-item" href="../profile.jsp">Profile</a></li>
                                 <li><hr class="dropdown-divider" /></li>
                                 <li><a class="dropdown-item" href="http://localhost:8080/E-commerce-GUI-Assignment/Logout">Logout</a></li>
                           
@@ -113,36 +96,59 @@
                 </div>
             </div>
         </header>
-                <img src="data:image/jpg;base64,<%= base64Image %>" width="240" height="300"/>
-                <p>Product name : <%= rs.getString("prod_name")%> </p>
-                <p>Description : <%= rs.getString("prod_desc") %> </p>
-                <p>Price : <%= rs.getString("prod_price") %> </p>
-                <p>Stock left : <%= rs.getString("prod_quantity") %> </p>
-                <p>Brand : <%= rs.getString("prod_brand") %> </p>
-                <%  
-                                rs3 = ps2.executeQuery();
-                                int count2 = 0;
-                                while(rs3.next()) {
-                                    if(rs3.getString("PROD_ID").equals(rs.getString("PROD_ID")) == true) { 
-                                        count2++;
-                                    } 
-                                }
-                                if(count2 > 0) {
-                                    %><div class="text-left"><a class="btn btn-outline-dark mt-auto" disabled>Already in cart</a></div><%
-                                }
-                                else {
-                                %> <div class="text-left"><a class="btn btn-outline-dark mt-auto" href="http://localhost:8080/E-commerce-Assignment-GUI/cart?id=<%= rs.getString("PROD_ID") %>">Add to cart</a></div> <%
-                                } 
-                                %>
-                
-                <%
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    %> 
-
-    <body>
+        <!-- Section-->
+    <div class="container">
         
-    </body>
+        <% 
+           
+           String email = (String)(httpSession.getAttribute("email"));
+           String phoneNumber = (String)(httpSession.getAttribute("phoneNumber"));
+           String birthDate = (String)(httpSession.getAttribute("birthDate"));
+           String password = (String)(httpSession.getAttribute("password"));
+        %>
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="p-5">
+                    <div class="text-center">
+                        <h1 class="h4 text-gray-900 mb-4">Edit your account, <%= username %> ?</h1>
+                    </div>
+                    <form method="post" action="http://localhost:8080/E-commerce-Assignment-GUI/editProfile" enctype="multipart/form-data" >
+                        <div class="form-group">
+                            <input type="email" class="form-control" name="email" id="email" value="<%= email %>" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="phoneNumber" id="phoneNumber" value="<%= phoneNumber %>" required> 
+                        </div>                        
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="password" id="password" value="<%= password %>" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="file" class="form-control" name="photo" id="photo" accept="image/*" required>
+                        </div>
+
+                        <input type="submit" value="Confirm" class="btn btn-primary btn-user btn-block">
+                    </form>
+                    <hr>
+ 
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="../js/sb-admin-2.min.js"></script>
+
+</body>
+
 </html>

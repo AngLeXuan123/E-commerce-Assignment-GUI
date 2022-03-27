@@ -1,6 +1,6 @@
 <%-- 
-    Document   : productDetails
-    Created on : 20 Mar 2022, 7:22:33 pm
+    Document   : profile.jsp
+    Created on : 3 Mar 2022, 9:04:08 pm
     Author     : user
 --%>
 
@@ -25,11 +25,8 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
-        <title>JSP Page</title>
     </head>
-    
-    <% String prodId = request.getParameter("prod");
-        try {
+    <%try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -40,11 +37,9 @@
         String username = (String)(httpSession.getAttribute("username"));
         try {
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
-            PreparedStatement ps = con.prepareStatement("select * from product where prod_id = ?");
             PreparedStatement ps2 = con.prepareStatement("select * from cart_item where id = ?");
             ps2.setString(1, username);
-            ps.setString(1, prodId);
-            rs = ps.executeQuery();
+   
             rs2 = ps2.executeQuery();
             
             
@@ -52,30 +47,14 @@
                 count++;
             }
  
-            String base64Image = "";
-
-            if (rs.next()) {
-                Blob pic;
-                pic = rs.getBlob("prod_photo");
-
-                if (pic != null) {
-
-                    InputStream inputStream = pic.getBinaryStream();
-
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    byte[] buffer = new byte[4096];
-                    int bytesRead = -1;
-
-                    while ((bytesRead = inputStream.read(buffer)) != -1) {
-                        outputStream.write(buffer, 0, bytesRead);
-                    }
-
-                    byte[] imageBytes = outputStream.toByteArray();
-                    base64Image = Base64.getEncoder().encodeToString(imageBytes);
-                }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    %>
                 
-                %>
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container px-4 px-lg-5">
                 <a class="navbar-brand" href="#!">Start Bootstrap</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -113,36 +92,24 @@
                 </div>
             </div>
         </header>
-                <img src="data:image/jpg;base64,<%= base64Image %>" width="240" height="300"/>
-                <p>Product name : <%= rs.getString("prod_name")%> </p>
-                <p>Description : <%= rs.getString("prod_desc") %> </p>
-                <p>Price : <%= rs.getString("prod_price") %> </p>
-                <p>Stock left : <%= rs.getString("prod_quantity") %> </p>
-                <p>Brand : <%= rs.getString("prod_brand") %> </p>
-                <%  
-                                rs3 = ps2.executeQuery();
-                                int count2 = 0;
-                                while(rs3.next()) {
-                                    if(rs3.getString("PROD_ID").equals(rs.getString("PROD_ID")) == true) { 
-                                        count2++;
-                                    } 
-                                }
-                                if(count2 > 0) {
-                                    %><div class="text-left"><a class="btn btn-outline-dark mt-auto" disabled>Already in cart</a></div><%
-                                }
-                                else {
-                                %> <div class="text-left"><a class="btn btn-outline-dark mt-auto" href="http://localhost:8080/E-commerce-Assignment-GUI/cart?id=<%= rs.getString("PROD_ID") %>">Add to cart</a></div> <%
-                                } 
-                                %>
-                
-                <%
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    %> 
-
-    <body>
         
+        <% 
+           char gender = (char)(httpSession.getAttribute("gender"));
+           String regDate = (String)(httpSession.getAttribute("regDate"));
+           String birthDate = (String)(httpSession.getAttribute("birthDate"));
+           String email = (String)(httpSession.getAttribute("email"));
+           String phoneNumber = (String)(httpSession.getAttribute("phoneNumber"));
+           String photo = (String)(httpSession.getAttribute("photo"));
+        %>
+        <div class='solid'>
+                <img src="data:image/jpg;base64,<%= photo %>" width="240" height="300"/>
+                <p>Username : <%= username %> </p>
+                <p>Gender : <%= gender %> </p>
+                <p>Registration Date : <%= regDate %> </p>
+                <p>Birth Date : <%= birthDate %> </p>
+                <p>Email : <%= email %> </p>
+                <p>Phone Number : <%= phoneNumber %> </p>
+                <br><a href="forms/editProfile.jsp"><button type=\"button\">Edit Profile</button></a>
+        </div>
     </body>
 </html>

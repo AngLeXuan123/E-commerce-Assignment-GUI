@@ -21,6 +21,6 @@ public class Logout extends HttpServlet {
 
         out.print("You are successfully logged out!");
 
-        out.print("<a href='main/adminT/forms/login.jsp'>Go back to login page -></a>");
+        response.sendRedirect("main/adminT/forms/login.jsp");
     }
 }
