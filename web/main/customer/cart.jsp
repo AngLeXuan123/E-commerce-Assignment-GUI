@@ -171,8 +171,13 @@
             }
         %>   
         <tr>
+            <% if(count > 0) { %>
             <td><h2>Total price :  RM <%= String.format("%.2f", totalPrice) %></h2></td>
-            <td align="center" colspan="4"><a href="checkout.jsp"><button class="btn btn-primary">Proceed to checkout</button></a></td>
+            <td align="center" colspan="4"><a href="forms/checkout.jsp"><button class="btn btn-primary">Proceed to checkout</button></a></td>
+            <% } else { %>
+            <td><h1>No item found, go add some?</h1></td>
+            <td align="center" colspan="4"><a href="index.jsp"><button class="btn btn-primary">Let's go!</button></a></td>
+            <% } %>
         </tr>
         </table>
 </div>

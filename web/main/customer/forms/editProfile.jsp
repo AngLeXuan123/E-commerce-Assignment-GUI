@@ -76,7 +76,7 @@
                             </ul>
                         </li>
                     </ul>
-                    <a href="cart.jsp">
+                    <a href="../cart.jsp">
                         
                         <button class="btn btn-outline-dark" type="submit">
                             <i class="bi-cart-fill me-1"></i>

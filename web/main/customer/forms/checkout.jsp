@@ -22,11 +22,11 @@
 
     <!-- Custom fonts for this template-->
     
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/styles.css" rel="stylesheet" />
+        <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
@@ -93,7 +93,7 @@
                             </ul>
                         </li>
                     </ul>
-                    <a href="cart.jsp">
+                    <a href="../cart.jsp">
                         
                         <button class="btn btn-outline-dark" type="submit">
                             <i class="bi-cart-fill me-1"></i>
@@ -131,7 +131,7 @@
                     <div class="text-center">
                         <h1 class="h4 text-gray-900 mb-4">Checkout</h1>
                     </div>
-                    <form method="post" action="http://localhost:8080/E-commerce-Assignment-GUI/editProfile" enctype="multipart/form-data" >
+                    <form method="post" action="http://localhost:8080/E-commerce-Assignment-GUI/checkout">
                         <div class="form-group">
                             <input type="text" class="form-control" name="address" id="address" placeholder="Address" required>
                         </div><br>
@@ -167,9 +167,9 @@
                         </div><br>
                         
                         <div class="form-group">
-                            <input type="number" min="100" max="999" class="form-control" name="name" id="name" placeholder="Card CCV" required>
+                            <input type="number" min="100" max="999" class="form-control" name="cardCCV" id="cardCCV" placeholder="Card CCV" required>
                         </div><br>
-                        
+                        <input type="hidden" name="amount" value="<%= totalPrice %>">
                         <div class="form-group">
                             <table width="100%"><tr>
                                 <td align="left"><h3>Total amount : </h3></td><td align="right"><h3>RM <%= String.format("%.2f", totalPrice) %></h3></td>
