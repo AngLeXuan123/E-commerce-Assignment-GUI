@@ -55,41 +55,41 @@ public class checkout extends HttpServlet {
         String orderStatus = "Order Received";
 
         try {
-            String orderId = "";
-            int orderId2 = 0;
+            int orderId = 0;
             
-            rs3 = pstmt7.executeQuery();
-            
-            if (rs3.next()) {
-                orderId2 = rs3.getInt(1);
-            }
+            pstmt = conn.prepareStatement("INSERT INTO ORDERS (ORDER_ADDRESS, PHONENUM, RECIPIENTNAME, ORDER_STATUS, ID, CARD_NUMBER, EXPIRY_MONTH, EXPIRY_YEAR, CARD_CCV, TOTAL_AMOUNT, ORDER_TIME) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)", Statement.RETURN_GENERATED_KEYS);  
+            pstmt.setString(1, address);
+            pstmt.setString(2, phoneNum);
+            pstmt.setString(3, repName);
+            pstmt.setString(4, orderStatus);
+            pstmt.setString(5, username);
+            pstmt.setString(6, cardNum);
+            pstmt.setInt(7, expiryMonth);
+            pstmt.setInt(8, expiryYear);
+            pstmt.setInt(9, cardCCV);
+            pstmt.setDouble(10, amount);
+            pstmt.executeUpdate();
+            rs3 = pstmt.getGeneratedKeys();
+            rs3.next();
+            orderId = rs3.getInt(1);       
 
-            checkout(orderId2, address, phoneNum, repName, orderStatus, username, cardNum, expiryMonth, expiryYear, cardCCV, amount);
-
-            pstmt6.setString(1, username);
-            pstmt6.setDouble(2, amount);
-
-            rs2 = pstmt6.executeQuery();
-
-            
-
-            if (rs2.next()) {
-                orderId = rs2.getString("ORDER_ID");
-            }
-
+            pstmt2 = conn.prepareStatement("SELECT * FROM CART_ITEM WHERE ID = ?");
             pstmt2.setString(1, username);
             rs = pstmt2.executeQuery();
 
-            while (rs.next()) {
+            while(rs.next()) {
+                pstmt3 = conn.prepareStatement("UPDATE PRODUCT SET PROD_QUANTITY = PROD_QUANTITY - ? WHERE PROD_ID = ?");
                 pstmt3.setInt(1, Integer.parseInt(rs.getString("quantity")));
                 pstmt3.setInt(2, Integer.parseInt(rs.getString("prod_id")));
                 pstmt3.executeUpdate();
 
-                pstmt4.setInt(1, Integer.parseInt(orderId));
+                pstmt4 = conn.prepareStatement("INSERT INTO ORDER_ITEM (ORDER_ID, PROD_ID, ORDER_QUANTITY) VALUES (?, ?, ?)");
+                pstmt4.setInt(1, orderId);
                 pstmt4.setInt(2, Integer.parseInt(rs.getString("prod_id")));
                 pstmt4.setInt(3, Integer.parseInt(rs.getString("quantity")));
                 pstmt4.executeUpdate();
 
+                pstmt5 = conn.prepareStatement("DELETE FROM CART_ITEM WHERE ID = ? AND PROD_ID = ?");
                 pstmt5.setString(1, rs.getString("id"));
                 pstmt5.setInt(2, Integer.parseInt(rs.getString("prod_id")));
                 pstmt5.executeUpdate();
@@ -104,32 +104,10 @@ public class checkout extends HttpServlet {
     private void initializeJdbc() {
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
-            conn = DriverManager.getConnection(host, user, password);
-            pstmt = conn.prepareStatement("INSERT INTO ORDERS (ORDER_ID, ORDER_ADDRESS, PHONENUM, RECIPIENTNAME, ORDER_STATUS, ID, CARD_NUMBER, EXPIRY_MONTH, EXPIRY_YEAR, CARD_CCV, TOTAL_AMOUNT, ORDER_TIME) VALUES(? + 1 , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)");
-            pstmt2 = conn.prepareStatement("SELECT * FROM CART_ITEM WHERE ID = ?");
-            pstmt3 = conn.prepareStatement("UPDATE PRODUCT SET PROD_QUANTITY = PROD_QUANTITY - ? WHERE PROD_ID = ?");
-            pstmt4 = conn.prepareStatement("INSERT INTO ORDER_ITEM (ORDER_ID, PROD_ID, ORDER_QUANTITY) VALUES (?, ?, ?)");
-            pstmt5 = conn.prepareStatement("DELETE FROM CART_ITEM WHERE ID = ? AND PROD_ID = ?");
-            pstmt6 = conn.prepareStatement("SELECT * FROM ORDERS WHERE ID = ? AND TOTAL_AMOUNT = ? ORDER BY ORDER_ID DESC FETCH FIRST 1 ROW ONLY");
-            pstmt7 = conn.prepareStatement("SELECT MAX(ORDER_ID) FROM ORDERS");
+            conn = DriverManager.getConnection(host, user, password);  
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-
-    private void checkout(int orderId,String address, String phoneNum, String repName, String orderStatus, String id, String cardNum, int expiryMonth, int expiryYear, int cardCCV, double totalAmount) throws SQLException {
-        pstmt.setInt(1, orderId);
-        pstmt.setString(2, address);
-        pstmt.setString(3, phoneNum);
-        pstmt.setString(4, repName);
-        pstmt.setString(5, orderStatus);
-        pstmt.setString(6, id);
-        pstmt.setString(7, cardNum);
-        pstmt.setInt(8, expiryMonth);
-        pstmt.setInt(9, expiryYear);
-        pstmt.setInt(10, cardCCV);
-        pstmt.setDouble(11, totalAmount);
-        pstmt.executeUpdate();
     }
 
     public boolean equals(Object obj) {

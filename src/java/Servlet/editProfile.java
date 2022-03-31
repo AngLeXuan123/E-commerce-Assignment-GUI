@@ -38,9 +38,12 @@ public class editProfile extends HttpServlet {
         
         HttpSession httpSession = request.getSession();
         String username = (String)httpSession.getAttribute("username");
+        String levelString = (String)httpSession.getAttribute("level");
         String pass = request.getParameter("password");
         String email = request.getParameter("email");
-        String phoneNumber = request.getParameter("phoneNumber");        
+        String phoneNumber = request.getParameter("phoneNumber");  
+        
+        char level = levelString.charAt(0);
         
         InputStream inputStream = null;
         InputStream input = null;
@@ -78,7 +81,13 @@ public class editProfile extends HttpServlet {
                 httpSession.setAttribute("email", email);
                 httpSession.setAttribute("phoneNumber", phoneNumber);
                 httpSession.setAttribute("photo", base64Image);
-                response.sendRedirect("main/adminT/forms/profile.jsp");
+                
+                if(Character.compare(level, 'A') == 0 || Character.compare(level, 'S') == 0) { 
+                    response.sendRedirect("main/adminT/profile.jsp");
+                }
+                else if(Character.compare(level, 'C') == 0) {
+                    response.sendRedirect("main/customer/profile.jsp");
+                }
             }
         } catch (SQLException ex) {
             out.println("ERROR: " + ex.getMessage());

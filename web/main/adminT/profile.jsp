@@ -1,21 +1,15 @@
+<%-- 
+    Document   : profile.jsp
+    Created on : 3 Mar 2022, 9:04:08 pm
+    Author     : user
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
     <head>
-        <%@ page import="java.io.*" %>
-        <%@ page import="javax.servlet.*" %>
-        <%@ page import="javax.servlet.http.*" %>
-        <%@ page import="java.sql.*" %>
-        <%@ page import="java.util.*" %>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
-
-        <title>SB Admin 2 - Staffs</title>
-
-        <!-- Custom fonts for this template-->
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
         <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -23,27 +17,18 @@
 
         <!-- Custom styles for this template-->
         <link href="css/sb-admin-2.min.css" rel="stylesheet">
-        <%  try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-            } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            }
-            
-            
-            ResultSet rs = null;
-            HttpSession httpSession = request.getSession();
-            String username = (String)(httpSession.getAttribute("username"));
-            String photo = (String)(httpSession.getAttribute("photo"));
-            String levelString = (String)(httpSession.getAttribute("level"));
-            char level = levelString.charAt(0);
-            try {
-            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
-            PreparedStatement ps = con.prepareStatement("select * from product");
-            rs = ps.executeQuery();
-            String base64Image = "";
-        %>
-    </head>
-
+    </head>      
+    <% HttpSession httpSession = request.getSession();
+       String username = (String)(httpSession.getAttribute("username"));
+       char gender = (char)(httpSession.getAttribute("gender"));
+       String regDate = (String)(httpSession.getAttribute("regDate"));
+       String birthDate = (String)(httpSession.getAttribute("birthDate"));
+       String email = (String)(httpSession.getAttribute("email"));
+       String phoneNumber = (String)(httpSession.getAttribute("phoneNumber"));
+       String photo = (String)(httpSession.getAttribute("photo"));
+       String levelString = (String)(httpSession.getAttribute("level"));
+       char level = levelString.charAt(0);
+    %>
     <body id="page-top">
 
         <!-- Page Wrapper -->
@@ -79,7 +64,7 @@
                 </div>
 
                 <!-- Nav Item - Pages Collapse Menu -->
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
                        aria-controls="collapseTwo">
                         <i class="fas fa-fw fa-cog"></i>
@@ -204,40 +189,18 @@
                     <div class="container-fluid">
 
                         <!-- Page Heading -->
-                        <h1 class="h3 mb-4 text-gray-800">Products</h1>
-                        <a class="btn btn-outline-dark mt-auto" href="forms/signUpProduct.html">Create new product</a>
+                        <h1 class="h3 mb-4 text-gray-800">Profile</h1>
+
                         <div class="content">
-                            <table>
-                                <%
-                                while (rs.next()) {
-                                Blob pic;
-                                pic = rs.getBlob("prod_photo");
-                
-                                if (pic != null) {
-
-                                InputStream inputStream = pic.getBinaryStream();
-
-                                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                                byte[] buffer = new byte[4096];
-                                int bytesRead = -1;
-
-                                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                                outputStream.write(buffer, 0, bytesRead);
-                                }
-
-                                byte[] imageBytes = outputStream.toByteArray();
-                                base64Image = Base64.getEncoder().encodeToString(imageBytes);
-                                }
-                                %>
-                                <tr><td><img width="50" height="50" src="data:image/jpg;base64,<%= base64Image %>"><%= rs.getString("prod_name") %></td>
-                                    <td><a class="btn btn-outline-dark mt-auto" href="viewProduct.jsp?id=<%= rs.getString("prod_id") %>">View product</a></td>
-                                    <td><a class="btn btn-outline-dark mt-auto" href="forms/editProduct.jsp?id=<%= rs.getString("prod_id") %>">Edit product</a></td>
-                                    <td><a class="btn btn-outline-dark mt-auto" href="http://localhost:8080/E-commerce-Assignment-GUI/deleteProduct?id=<%= rs.getString("prod_id") %>">Delete product</a></td></tr></div>
-                                <%
-                                } } catch (Exception e) {
-                                e.printStackTrace();
-                                } 
-                                %>
+                            <table class="table">
+                                <tr><td colspan="2"><img src="data:image/jpg;base64,<%= photo %>" width="240" height="300"/></td></tr>
+                                <td>Username :</td><td> <%= username %> </td></tr>
+                                <tr><td>Gender :</td><td> <%= gender %> </td></tr>
+                                <tr><td>Registration Date :</td><td> <%= regDate %> </td></tr>
+                                <tr><td>Birth Date :</td><td> <%= birthDate %> </td></tr>
+                                <tr><td>Email :</td><td> <%= email %> </td></tr>
+                                <tr><td>Phone Number :</td><td> <%= phoneNumber %></td></tr>
+                                <tr><td><br><a href="forms/editProfile.jsp"><button type=\"button\">Edit Profile</button></a></td></tr>
                             </table>
                         </div>
 
@@ -280,7 +243,7 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
+                            <span aria-hidden="true">Ã—</span>
                         </button>
                     </div>
                     <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
@@ -304,4 +267,6 @@
 
     </body>
 
+</html>
+</body>
 </html>

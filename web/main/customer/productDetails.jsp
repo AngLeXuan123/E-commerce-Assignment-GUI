@@ -27,7 +27,7 @@
         <script src="js/scripts.js"></script>
         <title>JSP Page</title>
     </head>
-    
+    <body>
     <% String prodId = request.getParameter("prod");
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
@@ -82,13 +82,13 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.jsp">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="order.jsp">Order</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Account</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="profile.jsp">Profile</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="http://localhost:8080/E-commerce-GUI-Assignment/Logout">Logout</a></li>
+                                <li><a class="dropdown-item" href="http://localhost:8080/E-commerce-Assignment-GUI/Logout">Logout</a></li>
                           
                             </ul>
                         </li>
@@ -113,12 +113,13 @@
                 </div>
             </div>
         </header>
-                <img src="data:image/jpg;base64,<%= base64Image %>" width="240" height="300"/>
-                <p>Product name : <%= rs.getString("prod_name")%> </p>
-                <p>Description : <%= rs.getString("prod_desc") %> </p>
-                <p>Price : <%= rs.getString("prod_price") %> </p>
-                <p>Stock left : <%= rs.getString("prod_quantity") %> </p>
-                <p>Brand : <%= rs.getString("prod_brand") %> </p>
+                <table class="table table-bordered table-striped mb-4">
+                <tr><td align="center" colspan="2"><img src="data:image/jpg;base64,<%= base64Image %>" width="240" height="300"/></td></tr>
+                <tr><td>Product name </td><td> <%= rs.getString("prod_name")%></td></tr>
+                <tr><td>Description </td><td> <%= rs.getString("prod_desc") %> </td></tr>
+                <tr><td>Price </td><td>RM <%= String.format("%.2f", rs.getDouble("prod_price")) %></td></tr>
+                <tr><td>Stock left </td><td>  <%= rs.getString("prod_quantity") %></td></tr>
+                <tr><td>Brand </td><td>  <%= rs.getString("prod_brand") %></td></tr>
                 <%  
                                 rs3 = ps2.executeQuery();
                                 int count2 = 0;
@@ -128,10 +129,13 @@
                                     } 
                                 }
                                 if(count2 > 0) {
-                                    %><div class="text-left"><a class="btn btn-outline-dark mt-auto" disabled>Already in cart</a></div><%
+                                    %><tr><td align="center" colspan="2"><div class="text-left"><a class="btn btn-outline-dark mt-auto" disabled>Already in cart</a></div></td></tr><%
                                 }
+                                else if (rs.getInt("PROD_QUANTITY") <= 0) {
+                                    %><tr><td align="center" colspan="2"><div class="text-left"><a class="btn btn-outline-dark mt-auto" disabled>Sold out</a></div></td></tr><%
+                                } 
                                 else {
-                                %> <div class="text-left"><a class="btn btn-outline-dark mt-auto" href="http://localhost:8080/E-commerce-Assignment-GUI/cart?id=<%= rs.getString("PROD_ID") %>">Add to cart</a></div> <%
+                                    %><tr><td align="center" colspan="2"><div class="text-left"><a class="btn btn-outline-dark mt-auto" href="http://localhost:8080/E-commerce-Assignment-GUI/cart?id=<%= rs.getString("PROD_ID") %>">Add to cart</a></div></td></tr> <%
                                 } 
                                 %>
                 
@@ -141,8 +145,11 @@
             e.printStackTrace();
         }
     %> 
-
-    <body>
+                </table>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
         
     </body>
 </html>

@@ -1,36 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
+<%-- 
+    Document   : profile.jsp
+    Created on : 3 Mar 2022, 9:04:08 pm
+    Author     : user
+--%>
 
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
     <head>
         <%@ page import="java.io.*" %>
         <%@ page import="javax.servlet.*" %>
         <%@ page import="javax.servlet.http.*" %>
         <%@ page import="java.sql.*" %>
         <%@ page import="java.util.*" %>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
-
-        <title>SB Admin 2 - Staffs</title>
-
-        <!-- Custom fonts for this template-->
-        <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
 
         <!-- Custom styles for this template-->
         <link href="css/sb-admin-2.min.css" rel="stylesheet">
-        <%  try {
+
+        <title>JSP Page</title>
+    </head>
+    <%  String idString = request.getParameter("id");    
+        int id = Integer.parseInt(idString);
+        try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             } catch (ClassNotFoundException e) {
             e.printStackTrace();
             }
-            
-            
-            ResultSet rs = null;
+        
+            ResultSet rs = null, rs2 = null, rs3 = null;
             HttpSession httpSession = request.getSession();
             String username = (String)(httpSession.getAttribute("username"));
             String photo = (String)(httpSession.getAttribute("photo"));
@@ -38,12 +39,16 @@
             char level = levelString.charAt(0);
             try {
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
-            PreparedStatement ps = con.prepareStatement("select * from product");
+            PreparedStatement ps = con.prepareStatement("select * from order_item where order_id = ?");
+            PreparedStatement ps2 = con.prepareStatement("select * from product where prod_id = ?");
+            PreparedStatement ps3 = con.prepareStatement("select * from orders where order_id = ?");
+            ps.setInt(1, id);
+            ps3.setInt(1, id);        
+            
             rs = ps.executeQuery();
-            String base64Image = "";
-        %>
-    </head>
-
+            rs3 = ps3.executeQuery();
+            String base64Image = "";   
+    %>
     <body id="page-top">
 
         <!-- Page Wrapper -->
@@ -79,7 +84,7 @@
                 </div>
 
                 <!-- Nav Item - Pages Collapse Menu -->
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
                        aria-controls="collapseTwo">
                         <i class="fas fa-fw fa-cog"></i>
@@ -96,7 +101,7 @@
                     </div>
                 </li>
                 <!-- Nav Item - Utilities Collapse Menu -->
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-fw fa-wrench"></i>
@@ -204,40 +209,64 @@
                     <div class="container-fluid">
 
                         <!-- Page Heading -->
-                        <h1 class="h3 mb-4 text-gray-800">Products</h1>
-                        <a class="btn btn-outline-dark mt-auto" href="forms/signUpProduct.html">Create new product</a>
+                        <h1 class="h3 mb-4 text-gray-800"><% if(rs3.next()) { %> <%= rs3.getString("id") %> <% }%>'s Profile</h1>
                         <div class="content">
-                            <table>
+                            <table class="table">
+                                <tr><td>Product</td><td>Quantity</td><td>Price (each)</td></tr>
                                 <%
-                                while (rs.next()) {
-                                Blob pic;
-                                pic = rs.getBlob("prod_photo");
-                
-                                if (pic != null) {
+                                    while (rs.next()) {
+                                    ps2.setInt(1, rs.getInt("prod_id"));
+                                    rs2 = ps2.executeQuery();
+                                
+                                    if(rs2.next()) {
+                                    Blob pic;
+                                    pic = rs2.getBlob("prod_photo");
 
-                                InputStream inputStream = pic.getBinaryStream();
+                                    if (pic != null) {
 
-                                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                                byte[] buffer = new byte[4096];
-                                int bytesRead = -1;
+                                    InputStream inputStream = pic.getBinaryStream();
 
-                                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                                outputStream.write(buffer, 0, bytesRead);
-                                }
+                                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                                    byte[] buffer = new byte[4096];
+                                    int bytesRead = -1;
 
-                                byte[] imageBytes = outputStream.toByteArray();
-                                base64Image = Base64.getEncoder().encodeToString(imageBytes);
-                                }
-                                %>
-                                <tr><td><img width="50" height="50" src="data:image/jpg;base64,<%= base64Image %>"><%= rs.getString("prod_name") %></td>
-                                    <td><a class="btn btn-outline-dark mt-auto" href="viewProduct.jsp?id=<%= rs.getString("prod_id") %>">View product</a></td>
-                                    <td><a class="btn btn-outline-dark mt-auto" href="forms/editProduct.jsp?id=<%= rs.getString("prod_id") %>">Edit product</a></td>
-                                    <td><a class="btn btn-outline-dark mt-auto" href="http://localhost:8080/E-commerce-Assignment-GUI/deleteProduct?id=<%= rs.getString("prod_id") %>">Delete product</a></td></tr></div>
-                                <%
-                                } } catch (Exception e) {
-                                e.printStackTrace();
-                                } 
-                                %>
+                                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                                    outputStream.write(buffer, 0, bytesRead);
+                                    }
+
+                                    byte[] imageBytes = outputStream.toByteArray();
+                                    base64Image = Base64.getEncoder().encodeToString(imageBytes);
+                                    }
+                                    }
+                                %>                          
+                                <tr><td><img src="data:image/jpg;base64,<%= base64Image %>" width="100" height="100"/><a href="productDetails.jsp?prod=<%= rs2.getString("prod_id")%>"><%= rs2.getString("prod_name")%></td><td><%= rs.getInt("ORDER_QUANTITY") %></td><td>RM <%= String.format("%.2f", rs2.getDouble("PROD_PRICE"))%></td></tr>
+                                        <%
+                                               } } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                        %>
+                                <tr><td>Order ID </td><td><%= rs3.getInt("order_id") %> </td></tr>
+                                <tr><td>Address </td><td><%= rs3.getString("order_address") %> </td></tr>
+                                <tr><td>Phone Number </td><td><%= rs3.getString("phoneNum") %> </td></tr>
+                                <tr><td>Recipient Name </td><td><%= rs3.getString("recipientname") %> </td></tr>
+                                <tr><td>Username </td><td><%= rs3.getString("id") %> </td></tr>
+                                <tr><td>Card Number </td><td><%= rs3.getString("card_number") %> </td></tr> 
+                                <tr><td>Expiry Date </td><td><%= rs3.getInt("expiry_year")/rs3.getInt("expiry_month") %> </td></tr> 
+                                <tr><td>Total Amount </td><td>RM <%= rs3.getDouble("total_amount") %> </td></tr> 
+                                <tr><td><form action="http://localhost:8080/E-commerce-Assignment-GUI/updateStatus" method="post">
+                                    <div class="form-group">
+                                        <label for="category">Order Status</label></td><td>
+                                        <select class="form-control" name="status" id="status" required>    
+                                            <option value="Order Received" <% if(rs3.getString("order_status").equals("Order Received"))  { %> selected <% } %>>Order Received</option>
+                                            <option value="Packaging Order" <% if(rs3.getString("order_status").equals("Packaging Order"))  { %> selected <% } %>>Packaging Order</option>
+                                            <option value="Shipping Order" <% if(rs3.getString("order_status").equals("Shipping Order"))  { %> selected <% } %>>Shipping Order</option>
+                                            <option value="Order Delivered" <% if(rs3.getString("order_status").equals("Order Delivered"))  { %> selected <% } %>>Order Delivered</option>  
+                                            
+                                        </select>
+                                    </div> 
+                                        <input type="hidden" name="id" value="<%= id %>">
+                                        </td>  
+                                        <td><input type="submit" value="Update"></td></tr> </form>
                             </table>
                         </div>
 
@@ -280,7 +309,7 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
+                            <span aria-hidden="true">Ã—</span>
                         </button>
                     </div>
                     <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>

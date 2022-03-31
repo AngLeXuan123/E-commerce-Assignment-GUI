@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
-public class editProduct extends HttpServlet {
+public class updateStatus extends HttpServlet {
 
     private Connection conn;
     private PreparedStatement pstmt;
@@ -34,30 +34,20 @@ public class editProduct extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         
-        String id = request.getParameter("id");
+        String idString = request.getParameter("id");
+        int id = Integer.parseInt(idString);
         
-        String name = request.getParameter("name");
-        String desc = request.getParameter("desc");
-        String priceString = request.getParameter("price");
-        double price = Double.parseDouble(priceString);
-        String quantityString = request.getParameter("quantity");        
-        int quantity = Integer.parseInt(quantityString);
-        String brand = request.getParameter("brand");
-        String category = request.getParameter("category");
-         
-        InputStream inputStream = null;
-        Part filePart = request.getPart("photo");
-        inputStream = filePart.getInputStream();
+        String status = request.getParameter("status");   
                
         try {
-            if (name.length() == 0 || desc.length() == 0 || brand.length() == 0 || category.length() == 0) {
+            if (status.length() == 0) {
                 out.println("Please fill out all the fields!");
                 errorCount++;
             }
 
             if (errorCount == 0) {
-                editProduct(name, desc, quantity, inputStream, brand, category, price, id);
-                response.sendRedirect("main/adminT/product.jsp");
+                updateStatus(status, id);
+                response.sendRedirect("main/adminT/viewOrder.jsp?id=" + id);
             }
         } catch (SQLException ex) {
             out.println("ERROR: " + ex.getMessage());
@@ -68,21 +58,15 @@ public class editProduct extends HttpServlet {
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             conn = DriverManager.getConnection(host, user, password);
-            pstmt = conn.prepareStatement("update product set prod_name = ?, prod_desc = ?, prod_quantity = ?, prod_photo = ?, prod_brand = ?, prod_category = ?, prod_price = ? where prod_id = ?");
+            pstmt = conn.prepareStatement("update orders set order_status = ? where order_id = ?");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    private void editProduct(String name, String desc, int quantity, InputStream photo, String brand, String category, double price, String id) throws SQLException {
-        pstmt.setString(1, name);
-        pstmt.setString(2, desc);    
-        pstmt.setInt(3, quantity);
-        pstmt.setBlob(4, photo);
-        pstmt.setString(5, brand);
-        pstmt.setString(6, category);
-        pstmt.setDouble(7, price);
-        pstmt.setString(8, id);
+    private void updateStatus(String status, int id) throws SQLException {
+        pstmt.setString(1, status);
+        pstmt.setInt(2, id);    
         pstmt.executeUpdate();
     }
 

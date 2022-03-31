@@ -1,7 +1,13 @@
+<%-- 
+    Document   : newjs
+    Created on : 28 Mar 2022, 8:12:31 pm
+    Author     : user
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <%@ page import="java.io.*" %>
+<html>
+    <%@ page import="java.io.*" %>
         <%@ page import="javax.servlet.*" %>
         <%@ page import="javax.servlet.http.*" %>
         <%@ page import="java.sql.*" %>
@@ -22,8 +28,9 @@
             } catch (ClassNotFoundException e) {
             e.printStackTrace();
             }
-            int count = 0;
-            ResultSet rs = null, rs2 = null, rs3 = null;
+            int count = 0, count2 = 0;
+            ResultSet rs = null, rs2 = null, rs3 = null, rs4 = null, rs5 = null;
+            String id = request.getParameter("id");
             HttpSession httpSession = request.getSession();
             String username = (String)(httpSession.getAttribute("username"));
             String photo = (String)(httpSession.getAttribute("photo"));
@@ -31,15 +38,24 @@
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
             PreparedStatement ps = con.prepareStatement("select * from product");
             PreparedStatement ps2 = con.prepareStatement("select * from cart_item where id = ?");
+            PreparedStatement ps3 = con.prepareStatement("select * from order_item where order_id = ?");
+            PreparedStatement ps4 = con.prepareStatement("select * from product where prod_id = ?");
+            PreparedStatement ps5 = con.prepareStatement("select * from orders where order_id = ?");
             ps2.setString(1, username);
+            ps3.setString(1, id);
+            ps5.setString(1, id);        
             
             rs = ps.executeQuery();
             rs2 = ps2.executeQuery();
+            rs3 = ps3.executeQuery();
+            rs5 = ps5.executeQuery(); 
             String base64Image = "";
             
             while(rs2.next()) {
                 count++;
             }
+            
+            
         %>
     </head>
     <body>
@@ -82,87 +98,56 @@
                 </div>
             </div>
         </header>
-        <!-- Section-->
-        
-        <section class="py-5">
-            <div class="container px-4 px-lg-5 mt-5">
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    <%
-                                while (rs.next()) {
-                                Blob pic;
-                                pic = rs.getBlob("prod_photo");
+        <h2>Order item(s) :</h2>
+        <table caption="Order item(s) :" class="table table-bordered table-striped mb-4">
+        <% 
+        while (rs3.next()) { 
+        ps4.setInt(1, Integer.parseInt(rs3.getString("prod_id")));
+        rs4 = ps4.executeQuery();
+        if(rs4.next()) {
+        Blob pic = rs4.getBlob("prod_photo");
                 
-                                if (pic != null) {
+        if (pic != null) {
 
-                                InputStream inputStream = pic.getBinaryStream();
+        InputStream inputStream = pic.getBinaryStream();
 
-                                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                                byte[] buffer = new byte[4096];
-                                int bytesRead = -1;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[4096];
+        int bytesRead = -1;
 
-                                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                                outputStream.write(buffer, 0, bytesRead);
-                                }
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bytesRead);
+        }
 
-                                byte[] imageBytes = outputStream.toByteArray();
-                                base64Image = Base64.getEncoder().encodeToString(imageBytes);
-                                }
-                                %>
-                                <div class="col mb-5">
-                        <div class="card h-100">
-                            <!-- Product image-->
-                            <img class="card-img-top" width="205.99px" height="205.99px" src="data:image/jpg;base64,<%= base64Image %>" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder"><%= rs.getString("PROD_NAME") %></h5>
-                                    <!-- Product price-->
-                                    RM <%= String.format("%.2f", rs.getDouble("PROD_PRICE")) %>
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="productDetails.jsp?prod=<%= rs.getString("PROD_ID") %>">View details</a></div><br>
-                                <%  
-                                rs3 = ps2.executeQuery();
-                                int count2 = 0;
-                                while(rs3.next()) {
-                                    if(rs3.getString("PROD_ID").equals(rs.getString("PROD_ID")) == true) { 
-                                        count2++;
-                                    } 
-                                }
-                                if(count2 > 0) {
-                                    %><div class="text-center"><a class="btn btn-outline-dark mt-auto" disabled>Already in cart</a></div><%
-                                }
-                                else if (rs.getInt("PROD_QUANTITY") <= 0) {
-                                    %><div class="text-center"><a class="btn btn-outline-dark mt-auto" disabled>Sold Out</a></div><%
-                                } 
-                                else {
-                                    %> <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="http://localhost:8080/E-commerce-Assignment-GUI/cart?id=<%= rs.getString("PROD_ID") %>">Add to cart</a></div> <%
-                                } 
-                                %>
-                                
-                            </div>
-                        </div>
-                    </div>
-                                <%
-                                } } catch (Exception e) {
-                                e.printStackTrace();
-                                } 
-                                %>
-                    
-                    
-                </div>
-            </div>
-        </section>
-        <!-- Footer-->
-        <footer class="py-5 bg-dark">
-            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
-        </footer>
+        byte[] imageBytes = outputStream.toByteArray();
+        base64Image = Base64.getEncoder().encodeToString(imageBytes);
+        }
+        
+        count2++;
+        %>   
+        <tr><td><%= count2 %></td><td><img src="data:image/jpg;base64,<%= base64Image %>" width="100" height="100"/><a href="productDetails.jsp?prod=<%= rs4.getString("prod_id")%>"><%= rs4.getString("prod_name")%></td><td><%= rs3.getInt("ORDER_QUANTITY") %></td><td>RM <%= String.format("%.2f", rs4.getDouble("PROD_PRICE"))%></td></tr>
+      
+        <% 
+        } } } catch (Exception e) {
+        e.printStackTrace();
+        } 
+        %>
+        </table><br>
+        <h2>Order Details</h2>
+        <table class="table table-bordered table-striped mb-4">
+        <% while (rs5.next()) { %>
+        <tr><td>Order Address : </td><td><%= rs5.getString("ORDER_ADDRESS") %></td></tr>    
+        <tr><td>Phone Number : </td><td><%= rs5.getString("PHONENUM") %></td></tr>
+        <tr><td>Recipient Name : </td><td><%= rs5.getString("RECIPIENTNAME") %></td></tr>
+        <tr><td>Order Status: </td><td><%= rs5.getString("ORDER_STATUS") %></td></tr>
+        <tr><td>Card Number : </td><td><%= rs5.getString("CARD_NUMBER") %></td></tr>
+        <tr><td>Expiry Date : </td><td><%= rs5.getString("EXPIRY_YEAR") %>/<%= rs5.getString("EXPIRY_MONTH") %></td></tr>
+        <tr><td>Total Amount : </td><td>RM <%= String.format("%.2f", rs5.getDouble("TOTAL_AMOUNT")) %></td></tr>
+        <% } %>
+        </table>
+    </body>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
-    </body>
 </html>

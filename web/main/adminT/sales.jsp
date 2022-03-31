@@ -13,7 +13,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>SB Admin 2 - Staffs</title>
+        <title>SB Admin 2 - Customers</title>
 
         <!-- Custom fonts for this template-->
         <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -38,9 +38,8 @@
             char level = levelString.charAt(0);
             try {
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
-            PreparedStatement ps = con.prepareStatement("select * from product");
+            PreparedStatement ps = con.prepareStatement("select * from orders order by order_time desc");
             rs = ps.executeQuery();
-            String base64Image = "";
         %>
     </head>
 
@@ -79,7 +78,7 @@
                 </div>
 
                 <!-- Nav Item - Pages Collapse Menu -->
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
                        aria-controls="collapseTwo">
                         <i class="fas fa-fw fa-cog"></i>
@@ -96,7 +95,7 @@
                     </div>
                 </li>
                 <!-- Nav Item - Utilities Collapse Menu -->
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-fw fa-wrench"></i>
@@ -204,35 +203,16 @@
                     <div class="container-fluid">
 
                         <!-- Page Heading -->
-                        <h1 class="h3 mb-4 text-gray-800">Products</h1>
-                        <a class="btn btn-outline-dark mt-auto" href="forms/signUpProduct.html">Create new product</a>
+                        <h1 class="h3 mb-4 text-gray-800">Customers</h1>
                         <div class="content">
-                            <table>
+                            <table class="table">
+                                <tr><td>Order Time</td><td>Username</td><td>Total Amount</td></tr>
                                 <%
-                                while (rs.next()) {
-                                Blob pic;
-                                pic = rs.getBlob("prod_photo");
-                
-                                if (pic != null) {
-
-                                InputStream inputStream = pic.getBinaryStream();
-
-                                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                                byte[] buffer = new byte[4096];
-                                int bytesRead = -1;
-
-                                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                                outputStream.write(buffer, 0, bytesRead);
-                                }
-
-                                byte[] imageBytes = outputStream.toByteArray();
-                                base64Image = Base64.getEncoder().encodeToString(imageBytes);
-                                }
+                                while (rs.next()) {                                
                                 %>
-                                <tr><td><img width="50" height="50" src="data:image/jpg;base64,<%= base64Image %>"><%= rs.getString("prod_name") %></td>
-                                    <td><a class="btn btn-outline-dark mt-auto" href="viewProduct.jsp?id=<%= rs.getString("prod_id") %>">View product</a></td>
-                                    <td><a class="btn btn-outline-dark mt-auto" href="forms/editProduct.jsp?id=<%= rs.getString("prod_id") %>">Edit product</a></td>
-                                    <td><a class="btn btn-outline-dark mt-auto" href="http://localhost:8080/E-commerce-Assignment-GUI/deleteProduct?id=<%= rs.getString("prod_id") %>">Delete product</a></td></tr></div>
+                                <tr><td><a href="viewOrder.jsp?id=<%= rs.getString("order_id") %>"><%= rs.getString("order_time") %></a></td>
+                                    <td><%= rs.getString("id") %></td>
+                                    <td>RM <%= String.format("%.2f", rs.getDouble("total_amount")) %></td></tr>
                                 <%
                                 } } catch (Exception e) {
                                 e.printStackTrace();

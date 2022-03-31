@@ -80,8 +80,14 @@
                             <input type="text" class="form-control" name="brand" id="brand" value="<%= rs.getString("prod_brand") %>" required> 
                         </div> 
                         <div class="form-group">
-                            <input type="text" class="form-control" name="category" id="category" value="<%= rs.getString("prod_category") %>" required> 
-                        </div>  
+                            <label for="category">Category</label>
+                            <select class="form-control" name="category" id="category" required>
+                                <option value="L">Laptop</option>
+                                <option value="H">Headphone</option>
+                                <option value="M">Mouse</option>
+                                <option value="K">Keyboard</option>          
+                              </select>
+                        </div> 
                         <div class="form-group">
                             <input type="file" class="form-control" name="photo" id="photo" accept="image/*" required>
                         </div>

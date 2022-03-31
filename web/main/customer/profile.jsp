@@ -61,13 +61,13 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.jsp">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="order.jsp">Order</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Account</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="profile.jsp">Profile</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="http://localhost:8080/E-commerce-GUI-Assignment/Logout">Logout</a></li>
+                                <li><a class="dropdown-item" href="http://localhost:8080/E-commerce-Assignment-GUI/Logout">Logout</a></li>
                           
                             </ul>
                         </li>
@@ -101,15 +101,19 @@
            String phoneNumber = (String)(httpSession.getAttribute("phoneNumber"));
            String photo = (String)(httpSession.getAttribute("photo"));
         %>
-        <div class='solid'>
+        <div class="">
                 <img src="data:image/jpg;base64,<%= photo %>" width="240" height="300"/>
-                <p>Username : <%= username %> </p>
-                <p>Gender : <%= gender %> </p>
-                <p>Registration Date : <%= regDate %> </p>
-                <p>Birth Date : <%= birthDate %> </p>
-                <p>Email : <%= email %> </p>
-                <p>Phone Number : <%= phoneNumber %> </p>
+                <table>
+                <tr><td>Username : </td><td><%= username %></td></tr> 
+                <tr><td>Gender : </td><td><%= gender %> </td></tr>
+                <tr><td>Registration Date :</td><td> <%= regDate %> </td></tr>
+                <tr><td>Birth Date :</td><td> <%= birthDate %> </td></tr>
+                <tr><td>Email : </td><td><%= email %> </td></tr>
+                <tr><td>Phone Number :</td><td> <%= phoneNumber %> </td></tr>
+                </table>
                 <br><a href="forms/editProfile.jsp"><button type=\"button\">Edit Profile</button></a>
         </div>
     </body>
+    <!-- Bootstrap core JS-->
+        
 </html>

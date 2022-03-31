@@ -57,7 +57,7 @@ public class signUpProduct extends HttpServlet {
 
             if (errorCount == 0) {
                 try {
-                    storeAccount(name, desc, price, quantity, regDate, inputStream, brand, category);
+                    storeAccount(name, desc, quantity, regDate, inputStream, brand, category, price);
                     response.sendRedirect("main/adminT/product.jsp");
                 } catch (SQLException ex) {
                     Logger.getLogger(signUpServlets.class.getName()).log(Level.SEVERE, null, ex);
@@ -70,21 +70,21 @@ private void initializeJdbc() {
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             conn = DriverManager.getConnection(host, user, password);
-            pstmt = conn.prepareStatement("INSERT INTO PRODUCT (PROD_NAME, PROD_DESC, PROD_PRICE, PROD_QUANTITY, PROD_RELEASE, PROD_PHOTO, PROD_BRAND, PROD_CATEGORY) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+            pstmt = conn.prepareStatement("INSERT INTO PRODUCT (PROD_NAME, PROD_DESC, PROD_QUANTITY, PROD_RELEASE, PROD_PHOTO, PROD_BRAND, PROD_CATEGORY, PROD_PRICE) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    private void storeAccount(String name, String desc, double price, int quantity, java.sql.Date regDate, InputStream photo, String brand, String category) throws SQLException {
+    private void storeAccount(String name, String desc, int quantity, java.sql.Date regDate, InputStream photo, String brand, String category, double price) throws SQLException {
         pstmt.setString(1, name);
-        pstmt.setString(2, desc);
-        pstmt.setDouble(3, price);
-        pstmt.setInt(4, quantity);
-        pstmt.setDate(5, regDate);
-        pstmt.setBlob(6, photo);
-        pstmt.setString(7, brand);
-        pstmt.setString(8, category);
+        pstmt.setString(2, desc);;
+        pstmt.setInt(3, quantity);
+        pstmt.setDate(4, regDate);
+        pstmt.setBlob(5, photo);
+        pstmt.setString(6, brand);
+        pstmt.setString(7, category);
+        pstmt.setDouble(8, price);
         pstmt.executeUpdate();
     }
 

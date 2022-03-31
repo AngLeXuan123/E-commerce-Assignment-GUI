@@ -13,7 +13,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>SB Admin 2 - Staffs</title>
+        <title>SB Admin 2 - Customers</title>
 
         <!-- Custom fonts for this template-->
         <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -38,7 +38,7 @@
             char level = levelString.charAt(0);
             try {
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
-            PreparedStatement ps = con.prepareStatement("select * from product");
+            PreparedStatement ps = con.prepareStatement("select * from account where level = 'C' order by ID asc");
             rs = ps.executeQuery();
             String base64Image = "";
         %>
@@ -79,7 +79,7 @@
                 </div>
 
                 <!-- Nav Item - Pages Collapse Menu -->
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
                        aria-controls="collapseTwo">
                         <i class="fas fa-fw fa-cog"></i>
@@ -96,7 +96,7 @@
                     </div>
                 </li>
                 <!-- Nav Item - Utilities Collapse Menu -->
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-fw fa-wrench"></i>
@@ -204,14 +204,14 @@
                     <div class="container-fluid">
 
                         <!-- Page Heading -->
-                        <h1 class="h3 mb-4 text-gray-800">Products</h1>
-                        <a class="btn btn-outline-dark mt-auto" href="forms/signUpProduct.html">Create new product</a>
+                        <h1 class="h3 mb-4 text-gray-800">Customers</h1>
                         <div class="content">
-                            <table>
+                            <table class="table">
+                                <tr><td>Username</td><td>Registration Date</td></tr>
                                 <%
                                 while (rs.next()) {
                                 Blob pic;
-                                pic = rs.getBlob("prod_photo");
+                                pic = rs.getBlob("photo");
                 
                                 if (pic != null) {
 
@@ -229,10 +229,9 @@
                                 base64Image = Base64.getEncoder().encodeToString(imageBytes);
                                 }
                                 %>
-                                <tr><td><img width="50" height="50" src="data:image/jpg;base64,<%= base64Image %>"><%= rs.getString("prod_name") %></td>
-                                    <td><a class="btn btn-outline-dark mt-auto" href="viewProduct.jsp?id=<%= rs.getString("prod_id") %>">View product</a></td>
-                                    <td><a class="btn btn-outline-dark mt-auto" href="forms/editProduct.jsp?id=<%= rs.getString("prod_id") %>">Edit product</a></td>
-                                    <td><a class="btn btn-outline-dark mt-auto" href="http://localhost:8080/E-commerce-Assignment-GUI/deleteProduct?id=<%= rs.getString("prod_id") %>">Delete product</a></td></tr></div>
+                                <tr><td><img width="50" height="50" src="data:image/jpg;base64,<%= base64Image %>">
+                                    <a href="viewCustomer.jsp?id=<%= rs.getString("id") %>"><%= rs.getString("id") %></a></td>
+                                    <td><%= rs.getString("regDate") %></td></tr>
                                 <%
                                 } } catch (Exception e) {
                                 e.printStackTrace();
