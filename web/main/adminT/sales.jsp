@@ -203,7 +203,7 @@
                     <div class="container-fluid">
 
                         <!-- Page Heading -->
-                        <h1 class="h3 mb-4 text-gray-800">Customers</h1>
+                        <h1 class="h3 mb-4 text-gray-800">Sales</h1>
                         <div class="content">
                             <table class="table">
                                 <tr><td>Order Time</td><td>Username</td><td>Total Amount</td></tr>

@@ -73,7 +73,6 @@
                     <button type="submit"><i class="fa fa-search"></i></button>
                     </form>
                     <a href="cart.jsp">
-                    <a href="cart.jsp">
                         
                         <button class="btn btn-outline-dark" type="submit">
                             <i class="bi-cart-fill me-1"></i>
@@ -100,21 +99,22 @@
         count2++;
         %>   
         <tr><td><%= count2 %></td><td><a href="orderDetails.jsp?id=<%= rs3.getString("ORDER_ID") %>"><%= rs3.getString("ORDER_TIME") %></a></td><td>RM <%= String.format("%.2f", rs3.getDouble("TOTAL_AMOUNT"))%></td><td><%= rs3.getString("ORDER_STATUS") %></td></tr>
-        <%
-        if(count2 == 0) { %>
-        <h3>Your cart is empty</h3>    
-         <% }
+        
+        <% 
             } } catch (Exception e) {
         e.printStackTrace();
         } 
-        %>
+        
+        if(count2 == 0) { %>
+        <h3>You haven't made any order :(</h3>  <% } %>
         </table>
-    </body>
-        <footer class="py-5 bg-dark">
+    
+        <footer class="fixed-bottom py-5 bg-dark">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
+        </body>
 </html>

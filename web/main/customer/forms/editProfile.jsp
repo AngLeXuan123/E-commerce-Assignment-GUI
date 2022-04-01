@@ -122,17 +122,17 @@
                     <form method="post" action="http://localhost:8080/E-commerce-Assignment-GUI/editProfile" enctype="multipart/form-data" >
                         <div class="form-group">
                             <input type="email" class="form-control" name="email" id="email" value="<%= email %>" required>
-                        </div>
+                        </div><br>
                         <div class="form-group">
                             <input type="text" class="form-control" name="phoneNumber" id="phoneNumber" value="<%= phoneNumber %>" required> 
-                        </div>                        
+                        </div><br>                        
                         <div class="form-group">
                             <input type="text" class="form-control" name="password" id="password" value="<%= password %>" required>
-                        </div>
+                        </div><br>
                         
                         <div class="form-group">
                             <input type="file" class="form-control" name="photo" id="photo" accept="image/*" required>
-                        </div>
+                        </div><br>
 
                         <input type="submit" value="Confirm" class="btn btn-primary btn-user btn-block">
                     </form>
@@ -155,5 +155,7 @@
     <script src="../js/sb-admin-2.min.js"></script>
 
 </body>
-
+<footer style="position: fixed; bottom: 0; width: 100%;" class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
+        </footer>
 </html>

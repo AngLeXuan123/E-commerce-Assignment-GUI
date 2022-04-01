@@ -95,7 +95,7 @@
                             </ul>
                         </li>
                     </ul>
-                    <form method="get" action="search.jsp" style="margin-right: 30px;">
+                    <form method="get" action="../search.jsp" style="margin-right: 30px;">
                     <input type="text" name="id" placeholder="Search">
                     <button type="submit"><i class="fa fa-search"></i></button>
                     </form>

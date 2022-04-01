@@ -71,7 +71,7 @@
                             </ul>
                         </li>
                     </ul>
-                    <form method="get" action="search.jsp" style="margin-right: 30px;">
+                    <form method="get" action="../search.jsp" style="margin-right: 30px;">
                     <input type="text" name="id" placeholder="Search">
                     <button type="submit"><i class="fa fa-search"></i></button>
                     </form>
@@ -105,15 +105,16 @@
            String photo = (String)(httpSession.getAttribute("photo"));
         %>
         <div class="">
-                <img src="data:image/jpg;base64,<%= photo %>" width="240" height="300"/>
-                <table class="table">
+                
+                <table class="table  table-bordered table-striped mb-4">
+                    <tr><td colspan="2" align="center" ><img src="data:image/jpg;base64,<%= photo %>" width="240" height="300"/></td></tr> 
                 <tr><td>Username : </td><td><%= username %></td></tr> 
                 <tr><td>Gender : </td><td><%= gender %> </td></tr>
                 <tr><td>Registration Date :</td><td> <%= regDate %> </td></tr>
                 <tr><td>Birth Date :</td><td> <%= birthDate %> </td></tr>
                 <tr><td>Email : </td><td><%= email %> </td></tr>
                 <tr><td>Phone Number :</td><td> <%= phoneNumber %> </td></tr>
-                <tr><td><a href="forms/editProfile.jsp"><button type=\"button\">Edit Profile</button></a></td></tr>
+                <tr><td align="center" colspan="2"><div class="text-left"><a class="btn btn-outline-dark mt-auto" href="forms/editProfile.jsp">Edit profile</a></div></td></tr>
                 </table>
                 
         </div>

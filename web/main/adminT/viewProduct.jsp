@@ -225,7 +225,7 @@
                     <div class="container-fluid">
 
                         <!-- Page Heading -->
-                        <h1 class="h3 mb-4 text-gray-800">Products</h1>
+                        <h1 class="h3 mb-4 text-gray-800">Product</h1>
                         <div class="content">
                             <table class="table">
                                 <tr><img src="data:image/jpg;base64,<%= base64Image %>" width="240" height="300"/></tr>

@@ -209,7 +209,7 @@
                     <div class="container-fluid">
 
                         <!-- Page Heading -->
-                        <h1 class="h3 mb-4 text-gray-800"><% if(rs3.next()) { %> <%= rs3.getString("id") %> <% }%>'s Profile</h1>
+                        <h1 class="h3 mb-4 text-gray-800">Order</h1>
                         <div class="content">
                             <table class="table">
                                 <tr><td>Product</td><td>Quantity</td><td>Price (each)</td></tr>
