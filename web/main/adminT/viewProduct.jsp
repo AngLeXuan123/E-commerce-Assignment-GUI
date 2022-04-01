@@ -151,10 +151,10 @@
                         </button>
 
                         <!-- Topbar Search -->
-                        <form
+                        <form method="get" action="search.jsp"
                             class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                             <div class="input-group">
-                                <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                                <input type="text" class="form-control bg-light border-0 small" name="id" placeholder="Search for..."
                                        aria-label="Search" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
                                     <button class="btn btn-primary" type="button">
@@ -226,7 +226,6 @@
 
                         <!-- Page Heading -->
                         <h1 class="h3 mb-4 text-gray-800">Products</h1>
-                        <a class="btn btn-outline-dark mt-auto" href="forms/signUpProduct.html">Create new product</a>
                         <div class="content">
                             <table class="table">
                                 <tr><img src="data:image/jpg;base64,<%= base64Image %>" width="240" height="300"/></tr>

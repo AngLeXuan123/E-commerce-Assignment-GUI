@@ -21,6 +21,7 @@
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
         <%  try {
@@ -78,6 +79,10 @@
                             </ul>
                         </li>
                     </ul>
+                    <form method="get" action="search.jsp" style="margin-right: 30px;">
+                    <input type="text" name="id" placeholder="Search">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
                     <a href="cart.jsp">
                         
                         <button class="btn btn-outline-dark" type="submit">
@@ -146,6 +151,9 @@
         <% } %>
         </table>
     </body>
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
+        </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->

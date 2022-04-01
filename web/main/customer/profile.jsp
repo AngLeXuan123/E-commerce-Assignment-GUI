@@ -20,11 +20,10 @@
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
     </head>
     <%try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
@@ -68,10 +67,14 @@
                                 <li><a class="dropdown-item" href="profile.jsp">Profile</a></li>
                                 <li><hr class="dropdown-divider" /></li>
                                 <li><a class="dropdown-item" href="http://localhost:8080/E-commerce-Assignment-GUI/Logout">Logout</a></li>
-                          
+
                             </ul>
                         </li>
                     </ul>
+                    <form method="get" action="search.jsp" style="margin-right: 30px;">
+                    <input type="text" name="id" placeholder="Search">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
                     <a href="cart.jsp">
                         
                         <button class="btn btn-outline-dark" type="submit">
@@ -103,17 +106,25 @@
         %>
         <div class="">
                 <img src="data:image/jpg;base64,<%= photo %>" width="240" height="300"/>
-                <table>
+                <table class="table">
                 <tr><td>Username : </td><td><%= username %></td></tr> 
                 <tr><td>Gender : </td><td><%= gender %> </td></tr>
                 <tr><td>Registration Date :</td><td> <%= regDate %> </td></tr>
                 <tr><td>Birth Date :</td><td> <%= birthDate %> </td></tr>
                 <tr><td>Email : </td><td><%= email %> </td></tr>
                 <tr><td>Phone Number :</td><td> <%= phoneNumber %> </td></tr>
+                <tr><td><a href="forms/editProfile.jsp"><button type=\"button\">Edit Profile</button></a></td></tr>
                 </table>
-                <br><a href="forms/editProfile.jsp"><button type=\"button\">Edit Profile</button></a>
+                
         </div>
-    </body>
+    
+    <!-- Footer-->
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
+        </footer>
     <!-- Bootstrap core JS-->
-        
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>    
+        </body>
 </html>

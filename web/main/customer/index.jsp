@@ -15,31 +15,33 @@
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
         <%  try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
+                Class.forName("org.apache.derby.jdbc.ClientDriver");
             } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+                e.printStackTrace();
             }
             int count = 0;
             ResultSet rs = null, rs2 = null, rs3 = null;
             HttpSession httpSession = request.getSession();
-            String username = (String)(httpSession.getAttribute("username"));
-            String photo = (String)(httpSession.getAttribute("photo"));
+            String username = (String) (httpSession.getAttribute("username"));
+            String photo = (String) (httpSession.getAttribute("photo"));
             try {
-            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
-            PreparedStatement ps = con.prepareStatement("select * from product");
-            PreparedStatement ps2 = con.prepareStatement("select * from cart_item where id = ?");
-            ps2.setString(1, username);
-            
-            rs = ps.executeQuery();
-            rs2 = ps2.executeQuery();
-            String base64Image = "";
-            
-            while(rs2.next()) {
-                count++;
-            }
+                Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
+                PreparedStatement ps = con.prepareStatement("select * from product");
+                PreparedStatement ps2 = con.prepareStatement("select * from cart_item where id = ?");
+                ps2.setString(1, username);
+
+                rs = ps.executeQuery();
+                rs2 = ps2.executeQuery();
+                String base64Image = "";
+
+                while (rs2.next()) {
+                    count++;
+                }
         %>
     </head>
     <body>
@@ -58,16 +60,20 @@
                                 <li><a class="dropdown-item" href="profile.jsp">Profile</a></li>
                                 <li><hr class="dropdown-divider" /></li>
                                 <li><a class="dropdown-item" href="http://localhost:8080/E-commerce-Assignment-GUI/Logout">Logout</a></li>
-                          
+
                             </ul>
                         </li>
                     </ul>
+                    <form method="get" action="search.jsp" style="margin-right: 30px;">
+                    <input type="text" name="id" placeholder="Search">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
                     <a href="cart.jsp">
-                        
+
                         <button class="btn btn-outline-dark" type="submit">
                             <i class="bi-cart-fill me-1"></i>
                             Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill"><%= count %></span>
+                            <span class="badge bg-dark text-white ms-1 rounded-pill"><%= count%></span>
                         </button>
                     </a>
                 </div>
@@ -83,16 +89,16 @@
             </div>
         </header>
         <!-- Section-->
-        
+
         <section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                     <%
-                                while (rs.next()) {
-                                Blob pic;
-                                pic = rs.getBlob("prod_photo");
-                
-                                if (pic != null) {
+                        while (rs.next()) {
+                            Blob pic;
+                            pic = rs.getBlob("prod_photo");
+
+                            if (pic != null) {
 
                                 InputStream inputStream = pic.getBinaryStream();
 
@@ -101,58 +107,57 @@
                                 int bytesRead = -1;
 
                                 while ((bytesRead = inputStream.read(buffer)) != -1) {
-                                outputStream.write(buffer, 0, bytesRead);
+                                    outputStream.write(buffer, 0, bytesRead);
                                 }
 
                                 byte[] imageBytes = outputStream.toByteArray();
                                 base64Image = Base64.getEncoder().encodeToString(imageBytes);
-                                }
-                                %>
-                                <div class="col mb-5">
+                            }
+                    %>
+                    <div class="col mb-5">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" width="205.99px" height="205.99px" src="data:image/jpg;base64,<%= base64Image %>" alt="..." />
+                            <img class="card-img-top" width="205.99px" height="205.99px" src="data:image/jpg;base64,<%= base64Image%>" alt="..." />
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
-                                    <h5 class="fw-bolder"><%= rs.getString("PROD_NAME") %></h5>
+                                    <h5 class="fw-bolder"><%= rs.getString("PROD_NAME")%></h5>
                                     <!-- Product price-->
-                                    RM <%= String.format("%.2f", rs.getDouble("PROD_PRICE")) %>
+                                    RM <%= String.format("%.2f", rs.getDouble("PROD_PRICE"))%>
                                 </div>
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="productDetails.jsp?prod=<%= rs.getString("PROD_ID") %>">View details</a></div><br>
-                                <%  
-                                rs3 = ps2.executeQuery();
-                                int count2 = 0;
-                                while(rs3.next()) {
-                                    if(rs3.getString("PROD_ID").equals(rs.getString("PROD_ID")) == true) { 
-                                        count2++;
-                                    } 
-                                }
-                                if(count2 > 0) {
-                                    %><div class="text-center"><a class="btn btn-outline-dark mt-auto" disabled>Already in cart</a></div><%
-                                }
-                                else if (rs.getInt("PROD_QUANTITY") <= 0) {
-                                    %><div class="text-center"><a class="btn btn-outline-dark mt-auto" disabled>Sold Out</a></div><%
-                                } 
-                                else {
-                                    %> <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="http://localhost:8080/E-commerce-Assignment-GUI/cart?id=<%= rs.getString("PROD_ID") %>">Add to cart</a></div> <%
-                                } 
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="productDetails.jsp?prod=<%= rs.getString("PROD_ID")%>">View details</a></div><br>
+                                <%
+                                    rs3 = ps2.executeQuery();
+                                    int count2 = 0;
+                                    while (rs3.next()) {
+                                        if (rs3.getString("PROD_ID").equals(rs.getString("PROD_ID")) == true) {
+                                            count2++;
+                                        }
+                                    }
+                                    if (count2 > 0) {
+                                %><div class="text-center"><a class="btn btn-outline-dark mt-auto" disabled>Already in cart</a></div><%
+                                    } else if (rs.getInt("PROD_QUANTITY") <= 0) {
+                                %><div class="text-center"><a class="btn btn-outline-dark mt-auto" disabled>Sold Out</a></div><%
+                                    } else {
+                                %> <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="http://localhost:8080/E-commerce-Assignment-GUI/cart?id=<%= rs.getString("PROD_ID")%>">Add to cart</a></div> <%
+                                        }
                                 %>
-                                
+
                             </div>
                         </div>
                     </div>
-                                <%
-                                } } catch (Exception e) {
-                                e.printStackTrace();
-                                } 
-                                %>
-                    
-                    
+                    <%
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    %>
+
+
                 </div>
             </div>
         </section>

@@ -23,14 +23,15 @@
 
         <title>JSP Page</title>
     </head>
-    <%  String id = request.getParameter("id");    
+    <%  String id = request.getParameter("id"); 
+        int count = 0;
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             } catch (ClassNotFoundException e) {
             e.printStackTrace();
             }
         
-            ResultSet rs = null;
+            ResultSet rs = null, rs2 = null;
             HttpSession httpSession = request.getSession();
             String username = (String)(httpSession.getAttribute("username"));
             String photo = (String)(httpSession.getAttribute("photo"));
@@ -39,9 +40,12 @@
             try {
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
             PreparedStatement ps = con.prepareStatement("select * from account where id = ?");
+            PreparedStatement ps2 = con.prepareStatement("select * from orders where id = ?");
             ps.setString(1, id);
+            ps2.setString(1, id);
             rs = ps.executeQuery();
-                     
+            rs2 = ps2.executeQuery();         
+            
             String base64Image = "";
             
             while (rs.next()) {
@@ -151,10 +155,10 @@
                         </button>
 
                         <!-- Topbar Search -->
-                        <form
+                        <form method="get" action="search.jsp"
                             class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                             <div class="input-group">
-                                <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                                <input type="text" class="form-control bg-light border-0 small" name="id" placeholder="Search for..."
                                        aria-label="Search" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
                                     <button class="btn btn-primary" type="button">
@@ -244,6 +248,17 @@
                                         }
                                         %>
                             </table>
+                            
+                            <h2> Order History </h2>
+                            <table class="table">
+                            <tr><td>Order Time</td><td>Total Amount</td></tr>
+                            <% while(rs2.next()) {  
+                                count++; %>
+                            <tr><td><a href="viewOrder.jsp?id=<%= rs2.getInt("order_id") %>"><%= rs2.getString("order_time") %></a></td>
+                            <td>RM <%= String.format("%.2f", rs2.getDouble("total_amount")) %></td></tr> 
+                            <% } %>
+                            </table>    
+                            
                         </div>
 
 

@@ -23,14 +23,14 @@
 
         <!-- Custom styles for this template-->
         <link href="css/sb-admin-2.min.css" rel="stylesheet">
-        <%  try {
+        <%  String id = request.getParameter("id");
+            try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             } catch (ClassNotFoundException e) {
             e.printStackTrace();
             }
-            
-            
-            ResultSet rs = null;
+            int count = 0, count2 = 0, count3 = 0;
+            ResultSet rs = null, rs2 = null, rs3 = null;
             HttpSession httpSession = request.getSession();
             String username = (String)(httpSession.getAttribute("username"));
             String photo = (String)(httpSession.getAttribute("photo"));
@@ -38,8 +38,15 @@
             char level = levelString.charAt(0);
             try {
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
-            PreparedStatement ps = con.prepareStatement("select * from account where level = 'S'");
+            PreparedStatement ps = con.prepareStatement("select * from account where level = 'S' and upper(id) like upper(?)");
+            PreparedStatement ps2 = con.prepareStatement("select * from account where level = 'C' and upper(id) like upper(?)");
+            PreparedStatement ps3 = con.prepareStatement("select * from product where upper(prod_name) like upper(?)");
+            ps.setString(1, "%" + id + "%");
+            ps2.setString(1, "%" + id + "%");
+            ps3.setString(1, "%" + id + "%");
             rs = ps.executeQuery();
+            rs2 = ps2.executeQuery();
+            rs3 = ps3.executeQuery();
             String base64Image = "";
         %>
     </head>
@@ -201,13 +208,14 @@
                     <!-- End of Topbar -->
 
                     <!-- Begin Page Content -->
+                    <% if((Character.compare(level, 'A') == 0)) { %>
                     <div class="container-fluid">
                         <h1 class="h3 mb-4 text-gray-800">Staffs</h1>
-                        <a class="btn btn-outline-dark mt-auto" href="forms/signUpStaff.html">Create new staff</a>
                         <div class="content">
                             <table>
                                 <%
                                 while (rs.next()) {
+                                count++;
                                 Blob pic;
                                 pic = rs.getBlob("photo");
                 
@@ -232,20 +240,94 @@
                                     <td><a class="btn btn-outline-dark mt-auto" href="forms/editStaff.jsp?id=<%= rs.getString("id") %>">Edit profile</a></td>
                                     <td><a class="btn btn-outline-dark mt-auto" href="http://localhost:8080/E-commerce-Assignment-GUI/deleteStaff?id=<%= rs.getString("id") %>">Delete profile</a></td></tr></div>
                                 <%
+                                } 
+                                %>
+                            </table>
+                                <% if(count == 0) { %><h3>No result found.<h3> <% } %>
+                        </div>
+                </div><br><br>
+                <% } %>
+                        <div class="container-fluid">
+
+                        <!-- Page Heading -->
+                        <h1 class="h3 mb-4 text-gray-800">Customers</h1>
+                        <div class="content">
+                            <table class="table">
+                                <%
+                                while (rs2.next()) {
+                                count2++;
+                                Blob pic;
+                                pic = rs2.getBlob("photo");
+                
+                                if (pic != null) {
+
+                                InputStream inputStream = pic.getBinaryStream();
+
+                                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                                byte[] buffer = new byte[4096];
+                                int bytesRead = -1;
+
+                                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                                outputStream.write(buffer, 0, bytesRead);
+                                }
+
+                                byte[] imageBytes = outputStream.toByteArray();
+                                base64Image = Base64.getEncoder().encodeToString(imageBytes);
+                                }
+                                %>
+                                <tr><td><img width="50" height="50" src="data:image/jpg;base64,<%= base64Image %>">
+                                    <a href="viewCustomer.jsp?id=<%= rs2.getString("id") %>"><%= rs2.getString("id") %></a></td>
+                                   </tr>
+                                <%
+                                } 
+                                %>
+                            </table>
+                            <% if(count2 == 0) { %><h3>No result found.<h3> <% } %>
+                        </div>
+                        </div><br><br>
+                    <!-- /.container-fluid -->
+                    
+                     <div class="container-fluid">
+
+                        <!-- Page Heading -->
+                        <h1 class="h3 mb-4 text-gray-800">Products</h1>
+                        <div class="content">
+                            <table>
+                                <%
+                                while (rs3.next()) {
+                                count3++;
+                                Blob pic;
+                                pic = rs3.getBlob("prod_photo");
+                
+                                if (pic != null) {
+
+                                InputStream inputStream = pic.getBinaryStream();
+
+                                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                                byte[] buffer = new byte[4096];
+                                int bytesRead = -1;
+
+                                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                                outputStream.write(buffer, 0, bytesRead);
+                                }
+
+                                byte[] imageBytes = outputStream.toByteArray();
+                                base64Image = Base64.getEncoder().encodeToString(imageBytes);
+                                }
+                                %>
+                                <tr><td><img width="50" height="50" src="data:image/jpg;base64,<%= base64Image %>"><%= rs3.getString("prod_name") %></td>
+                                    <td><a class="btn btn-outline-dark mt-auto" href="viewProduct.jsp?id=<%= rs3.getString("prod_id") %>">View product</a></td>
+                                    <td><a class="btn btn-outline-dark mt-auto" href="forms/editProduct.jsp?id=<%= rs3.getString("prod_id") %>">Edit product</a></td>
+                                    <td><a class="btn btn-outline-dark mt-auto" href="http://localhost:8080/E-commerce-Assignment-GUI/deleteProduct?id=<%= rs3.getString("prod_id") %>">Delete product</a></td></tr></div>
+                                <%
                                 } } catch (Exception e) {
                                 e.printStackTrace();
                                 } 
                                 %>
                             </table>
+                            <% if(count3 == 0) { %><h3>No result found.<h3> <% } %>
                         </div>
-
-
-
-
-
-                    </div>
-                    <!-- /.container-fluid -->
-
+            </div>
                 </div>
                 <!-- End of Main Content -->
 

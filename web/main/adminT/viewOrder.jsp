@@ -135,10 +135,10 @@
                         </button>
 
                         <!-- Topbar Search -->
-                        <form
+                        <form method="get" action="search.jsp"
                             class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                             <div class="input-group">
-                                <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                                <input type="text" class="form-control bg-light border-0 small" name="id" placeholder="Search for..."
                                        aria-label="Search" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
                                     <button class="btn btn-primary" type="button">
@@ -239,7 +239,7 @@
                                     }
                                     }
                                 %>                          
-                                <tr><td><img src="data:image/jpg;base64,<%= base64Image %>" width="100" height="100"/><a href="productDetails.jsp?prod=<%= rs2.getString("prod_id")%>"><%= rs2.getString("prod_name")%></td><td><%= rs.getInt("ORDER_QUANTITY") %></td><td>RM <%= String.format("%.2f", rs2.getDouble("PROD_PRICE"))%></td></tr>
+                                <tr><td><img src="data:image/jpg;base64,<%= base64Image %>" width="100" height="100"/><a href="viewProduct.jsp?id=<%= rs2.getString("prod_id")%>"><%= rs2.getString("prod_name")%></td><td><%= rs.getInt("ORDER_QUANTITY") %></td><td>RM <%= String.format("%.2f", rs2.getDouble("PROD_PRICE"))%></td></tr>
                                         <%
                                                } } catch (Exception e) {
                                                     e.printStackTrace();
@@ -249,7 +249,7 @@
                                 <tr><td>Address </td><td><%= rs3.getString("order_address") %> </td></tr>
                                 <tr><td>Phone Number </td><td><%= rs3.getString("phoneNum") %> </td></tr>
                                 <tr><td>Recipient Name </td><td><%= rs3.getString("recipientname") %> </td></tr>
-                                <tr><td>Username </td><td><%= rs3.getString("id") %> </td></tr>
+                                <tr><td>Username </td><td><a href="viewCustomer.jsp?id=<%= rs3.getString("id") %>"><%= rs3.getString("id") %></td></tr>
                                 <tr><td>Card Number </td><td><%= rs3.getString("card_number") %> </td></tr> 
                                 <tr><td>Expiry Date </td><td><%= rs3.getInt("expiry_year")/rs3.getInt("expiry_month") %> </td></tr> 
                                 <tr><td>Total Amount </td><td>RM <%= rs3.getDouble("total_amount") %> </td></tr> 
