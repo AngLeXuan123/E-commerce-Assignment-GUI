@@ -28,25 +28,36 @@
         <title>JSP Page</title>
     </head>
     <body>
-    <% String prodId = request.getParameter("prod");
+        
+    <%  
+        String prodId = request.getParameter("prod");
+        int prod = Integer.parseInt(prodId);
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        int count = 0;
-        ResultSet rs = null, rs2 = null, rs3 = null;
+        int count = 0, count3 = 0;
+        ResultSet rs = null, rs2 = null, rs3 = null, rs4 = null, rs5 = null, rs6 = null;
         HttpSession httpSession = request.getSession();
         String username = (String)(httpSession.getAttribute("username"));
         try {
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
             PreparedStatement ps = con.prepareStatement("select * from product where prod_id = ?");
             PreparedStatement ps2 = con.prepareStatement("select * from cart_item where id = ?");
-            ps2.setString(1, username);
+            PreparedStatement ps3 = con.prepareStatement("select * from comment where prod_id = ?");
+            PreparedStatement ps4 = con.prepareStatement("select * from orders where id = ?");
+            PreparedStatement ps5 = con.prepareStatement("select * from order_item where order_id = ?");
+
             ps.setString(1, prodId);
+            ps2.setString(1, username);
+            ps3.setString(1, prodId);
+            ps4.setString(1, username);
+            
             rs = ps.executeQuery();
             rs2 = ps2.executeQuery();
-            
+            rs4 = ps3.executeQuery();
+            rs5 = ps4.executeQuery();
             
             while(rs2.next()) {
                 count++;
@@ -145,12 +156,36 @@
                 
                 <%
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     %> 
                 </table>
+                <h2>Comment(s)</h2>
+                <table class="table table-bordered table-striped mb-4">
+                    <% while(rs5.next()) { 
+                       ps5.setInt(1, rs5.getInt("order_id"));
+                       rs6 = ps5.executeQuery();
+                            while(rs6.next()) {
+                                if(rs6.getInt("prod_id") == prod && count3 == 0) { count3++; %>
+                                    
+                                    <tr><form class="form-group" method="get" action="http://localhost:8080/E-commerce-Assignment-GUI/submitComment">
+                                        <td><input style="width: 100%;" type="text" name="comment" placeholder="Leave your comment..." required></td><td><input type="submit" value="Submit"></td>
+                                        <input type="hidden" value="<%= prod %>" name="prod">
+                                    </tr></form>
+                                    
+                                <% }
+                            }
+                    }%>
+                        <% while(rs4.next()) { %>
+                        <table class="table table-bordered table-striped mb-4">
+                    <tr><td><%= rs4.getString("id") %></td><td><%= rs4.getString("comment_time") %></td></tr>
+                    <tr><td colspan="2"><%= rs4.getString("comment_text") %></td></tr>         
+                        </table>
+                    <%  } %>
+                </table>
+    </table>
                 </body>
+                <% } catch (Exception e) {
+                e.printStackTrace();
+                } %>
         <footer class="py-5 bg-dark">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
         </footer>

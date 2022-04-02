@@ -94,6 +94,14 @@
         <servlet-name>updateStatus</servlet-name>
         <servlet-class>Servlet.updateStatus</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>submitComment</servlet-name>
+        <servlet-class>Servlet.submitComment</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>deleteComment</servlet-name>
+        <servlet-class>Servlet.deleteComment</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>signUpServlet</servlet-name>
         <url-pattern>/signUpServlet</url-pattern>
@@ -157,6 +165,14 @@
     <servlet-mapping>
         <servlet-name>updateStatus</servlet-name>
         <url-pattern>/updateStatus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>submitComment</servlet-name>
+        <url-pattern>/submitComment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>deleteComment</servlet-name>
+        <url-pattern>/deleteComment</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

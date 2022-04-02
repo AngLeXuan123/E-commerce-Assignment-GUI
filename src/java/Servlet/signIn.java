@@ -79,7 +79,7 @@ public class signIn extends HttpServlet {
 
             } else {
                 out.println("Username or Password incorrect");
-                response.sendRedirect("mainlogin.jsp");
+                response.sendRedirect("main/login.jsp");
             }
 
         } catch (Exception e) {

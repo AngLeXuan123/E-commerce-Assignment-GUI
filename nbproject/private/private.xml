@@ -8,15 +8,22 @@
             <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/web/main/customer/forms/checkout.jsp</file>
             <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/editProduct.java</file>
             <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/web/main/customer/cart.jsp</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/addQuantity.java</file>
             <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/web/main/customer/orderDetails.jsp</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/signIn.java</file>
             <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/addToCart.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/signUpStaff.java</file>
             <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/web/main/customer/search.jsp</file>
             <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/checkout.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/submitComment.java</file>
             <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/web/main/customer/forms/editProfile.jsp</file>
             <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/signUpProduct.java</file>
             <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/web/main/customer/productDetails.jsp</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/deleteComment.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/signUpServlets.java</file>
             <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/updateStatus.java</file>
             <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/web/main/customer/order.jsp</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/deleteProduct.java</file>
         </group>
     </open-files>
 </project-private>

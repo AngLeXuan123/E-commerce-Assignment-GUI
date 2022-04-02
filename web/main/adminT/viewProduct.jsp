@@ -30,7 +30,7 @@
             e.printStackTrace();
             }
         
-            ResultSet rs = null;
+            ResultSet rs = null, rs2 = null, rs3 = null;
             HttpSession httpSession = request.getSession();
             String username = (String)(httpSession.getAttribute("username"));
             String photo = (String)(httpSession.getAttribute("photo"));
@@ -39,8 +39,13 @@
             try {
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
             PreparedStatement ps = con.prepareStatement("select * from product where prod_id = ?");
+            PreparedStatement ps2 = con.prepareStatement("select * from comment where prod_id = ?");
+            
             ps.setString(1, id);
+            ps2.setString(1, id);
+            
             rs = ps.executeQuery();
+            rs2 = ps2.executeQuery();
                      
             String base64Image = "";
             
@@ -256,17 +261,24 @@
                                         <tr><td><a href="forms/editProduct.jsp?id=<%= id %>"><button type=\"button\">Edit Product</button></a>
                                         <a href="http://localhost:8080/E-commerce-Assignment-GUI/deleteProduct?id=<%= id %>"><button type=\"button\">Delete Product</button></a></td></tr>
                                         <%
-                                        } } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
+                                        } 
                                         %>
                             </table>
                         </div>
+                            
+                        <h1 class="h3 mb-4 text-gray-800">Comment(s)</h1>
+                        <div class="content">
+                            <table class="table table-bordered table-striped mb-4">
 
-
-
-
-
+                                <% while(rs2.next()) { %>
+                                
+                                <tr><td><a href="viewCustomer.jsp?id=<%= rs2.getString("id") %>"><%= rs2.getString("id") %></td><td colspan="2"><%= rs2.getString("comment_time") %></td></tr>
+                                <tr><td colspan="2"><%= rs2.getString("comment_text") %></td><td><a class="btn btn-outline-dark mt-auto" href="http://localhost:8080/E-commerce-Assignment-GUI/deleteComment?id=<%= rs2.getString("comment_id") %>&prod=<%= id %>">Delete comment</a></td></tr>    
+                                <% } } catch (Exception e) {
+                                            e.printStackTrace();
+                                        } %>
+                </table>
+                        </div>
                     </div>
                     <!-- /.container-fluid -->
 

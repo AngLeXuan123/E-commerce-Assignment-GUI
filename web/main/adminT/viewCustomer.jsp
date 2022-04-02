@@ -31,7 +31,7 @@
             e.printStackTrace();
             }
         
-            ResultSet rs = null, rs2 = null;
+            ResultSet rs = null, rs2 = null, rs3 = null, rs4 = null;
             HttpSession httpSession = request.getSession();
             String username = (String)(httpSession.getAttribute("username"));
             String photo = (String)(httpSession.getAttribute("photo"));
@@ -41,10 +41,14 @@
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
             PreparedStatement ps = con.prepareStatement("select * from account where id = ?");
             PreparedStatement ps2 = con.prepareStatement("select * from orders where id = ?");
+            PreparedStatement ps3 = con.prepareStatement("select * from comment where id = ?");
+            PreparedStatement ps4 = con.prepareStatement("select * from product where prod_id = ?");
             ps.setString(1, id);
             ps2.setString(1, id);
+            ps3.setString(1, id);
             rs = ps.executeQuery();
-            rs2 = ps2.executeQuery();         
+            rs2 = ps2.executeQuery();  
+            rs3 = ps3.executeQuery();
             
             String base64Image = "";
             
@@ -243,9 +247,7 @@
                                 <tr><td>Email  </td><td><%= rs.getString("email") %> </td></tr>
                                 <tr><td>Phone Number  </td><td><%= rs.getString("phoneNumber") %> </td></tr>                                
                                         <%
-                                        } } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
+                                        } 
                                         %>
                             </table>
                             
@@ -260,11 +262,24 @@
                             </table>    
                             
                         </div>
-
-
-
-
-
+                        <h2>Comment(s)</h2>
+                        <table class="table table-bordered table-striped mb-4">
+                        <% while(rs3.next()) { 
+                            ps4.setString(1, rs3.getString("prod_id"));
+                            rs4 = ps4.executeQuery();
+                            
+                            while(rs4.next()) { %>
+                                <tr><td><a href="viewProduct.jsp?id=<%= rs4.getString("prod_id") %>"><%= rs4.getString("prod_name") %></td>
+                            <% } %>       
+                        
+                        <td colspan="2"><%= rs3.getString("comment_time") %></td></tr>
+                        <tr><td colspan="2"><%= rs3.getString("comment_text") %></td><td><a class="btn btn-outline-dark mt-auto" href="http://localhost:8080/E-commerce-Assignment-GUI/deleteComment?id=<%= rs3.getString("comment_id") %>&prod=<%= rs3.getString("prod_id") %>">Delete comment</a></td></tr>    
+                        <% } } catch (Exception e) {
+                           e.printStackTrace();
+}
+                         %>
+                        </table>
+  
                     </div>
                     <!-- /.container-fluid -->
 

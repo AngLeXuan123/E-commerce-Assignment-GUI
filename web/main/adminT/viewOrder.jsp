@@ -240,12 +240,11 @@
                                     }
                                 %>                          
                                 <tr><td><img src="data:image/jpg;base64,<%= base64Image %>" width="100" height="100"/><a href="viewProduct.jsp?id=<%= rs2.getString("prod_id")%>"><%= rs2.getString("prod_name")%></td><td><%= rs.getInt("ORDER_QUANTITY") %></td><td>RM <%= String.format("%.2f", rs2.getDouble("PROD_PRICE"))%></td></tr>
+                                
                                         <%
-                                               } } catch (Exception e) {
-                                                    e.printStackTrace();
-                                                }
+                                               } if(rs3.next()) {
                                         %>
-                                <tr><td>Order ID </td><td><%= rs3.getInt("order_id") %> </td></tr>
+                               <tr><td>Order ID </td><td><%= rs3.getInt("order_id") %> </td></tr>
                                 <tr><td>Address </td><td><%= rs3.getString("order_address") %> </td></tr>
                                 <tr><td>Phone Number </td><td><%= rs3.getString("phoneNum") %> </td></tr>
                                 <tr><td>Recipient Name </td><td><%= rs3.getString("recipientname") %> </td></tr>
@@ -270,7 +269,9 @@
                             </table>
                         </div>
 
-
+                        <% } } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }%>
 
 
 

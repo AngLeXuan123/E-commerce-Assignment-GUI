@@ -30,7 +30,7 @@
             }
             
             
-            ResultSet rs = null;
+            ResultSet rs = null, rs2 = null, rs3 = null;
             HttpSession httpSession = request.getSession();
             String username = (String)(httpSession.getAttribute("username"));
             String photo = (String)(httpSession.getAttribute("photo"));
@@ -39,6 +39,7 @@
             try {
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
             PreparedStatement ps = con.prepareStatement("select * from product");
+            
             rs = ps.executeQuery();
             String base64Image = "";
         %>
@@ -243,6 +244,7 @@
 
                     </div>
                     <!-- /.container-fluid -->
+                    
 
                 </div>
                 <!-- End of Main Content -->
