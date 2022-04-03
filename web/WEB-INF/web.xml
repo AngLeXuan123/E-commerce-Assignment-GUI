@@ -102,6 +102,14 @@
         <servlet-name>deleteComment</servlet-name>
         <servlet-class>Servlet.deleteComment</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>submitReply</servlet-name>
+        <servlet-class>Servlet.submitReply</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>deleteReply</servlet-name>
+        <servlet-class>Servlet.deleteReply</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>signUpServlet</servlet-name>
         <url-pattern>/signUpServlet</url-pattern>
@@ -173,6 +181,14 @@
     <servlet-mapping>
         <servlet-name>deleteComment</servlet-name>
         <url-pattern>/deleteComment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>submitReply</servlet-name>
+        <url-pattern>/submitReply</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>deleteReply</servlet-name>
+        <url-pattern>/deleteReply</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

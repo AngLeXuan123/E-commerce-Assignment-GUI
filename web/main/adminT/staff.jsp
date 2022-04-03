@@ -12,7 +12,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-
+        
         <title>SB Admin 2 - Staffs</title>
 
         <!-- Custom fonts for this template-->
@@ -203,9 +203,11 @@
                     <!-- Begin Page Content -->
                     <div class="container-fluid">
                         <h1 class="h3 mb-4 text-gray-800">Staffs</h1>
-                        <a class="btn btn-outline-dark mt-auto" href="forms/signUpStaff.html">Create new staff</a>
-                        <div class="content">
-                            <table>
+                        <a class="btn btn-outline-dark mt-auto" href="forms/signUpStaff.jsp">Create new staff</a>
+                        <div class="content"><br>
+                            <table class="table table-striped table-bordered">
+                                
+                                <tbody>
                                 <%
                                 while (rs.next()) {
                                 Blob pic;

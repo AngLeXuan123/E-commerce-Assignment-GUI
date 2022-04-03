@@ -131,7 +131,7 @@
         
         <tr>
         <td>
-        <img src="data:image/jpg;base64,<%= base64Image %>" width="100" height="100"/> <%= rs3.getString("prod_name")%>
+        <a href="productDetails.jsp?prod=<%= rs3.getString("prod_id") %>"><img src="data:image/jpg;base64,<%= base64Image %>" width="100" height="100"/> <%= rs3.getString("prod_name")%></a>
         </td>
         <td>
         <form style="display: inline-block;" action ="http://localhost:8080/E-commerce-Assignment-GUI/minusQuantity" method="POST">

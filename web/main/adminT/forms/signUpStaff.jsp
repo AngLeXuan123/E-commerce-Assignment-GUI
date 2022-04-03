@@ -1,59 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
+    <!DOCTYPE html>
+    <html lang="en">
 
     <head>
         <%@ page import="java.io.*" %>
-        <%@ page import="javax.servlet.*" %>
-        <%@ page import="javax.servlet.http.*" %>
-        <%@ page import="java.sql.*" %>
-        <%@ page import="java.util.*" %>
+    <%@ page import="javax.servlet.*" %>
+    <%@ page import="javax.servlet.http.*" %>
+    <%@ page import="java.sql.*" %>
+    <%@ page import="java.util.*" %>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>SB Admin 2 - Customers</title>
+        <title>SB Admin 2 - Register</title>
 
         <!-- Custom fonts for this template-->
-        <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
 
         <!-- Custom styles for this template-->
-        <link href="css/sb-admin-2.min.css" rel="stylesheet">
-        <%  try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-            } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            }
-            
-            
-            ResultSet rs = null;
-            HttpSession httpSession = request.getSession();
+        <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+        <% HttpSession httpSession = request.getSession();
             String username = (String)(httpSession.getAttribute("username"));
             String photo = (String)(httpSession.getAttribute("photo"));
-            String levelString = (String)(httpSession.getAttribute("level"));
-            char level = levelString.charAt(0);
-            try {
-            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
-            PreparedStatement ps = con.prepareStatement("select * from account where level = 'C' order by ID asc");
-            rs = ps.executeQuery();
-            String base64Image = "";
-        %>
+           String levelString = (String)(httpSession.getAttribute("level"));
+           char level = levelString.charAt(0); %>
     </head>
 
     <body id="page-top">
-
-        <!-- Page Wrapper -->
-        <div id="wrapper">
+    <div id="wrapper">
 
             <!-- Sidebar -->
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Sidebar - Brand -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="adminDashboard.jsp">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../adminDashboard.jsp">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-laugh-wink"></i>
                     </div>
@@ -64,8 +48,8 @@
                 <hr class="sidebar-divider my-0">
 
                 <!-- Nav Item - Dashboard -->
-                <li class="nav-item">
-                    <a class="nav-link" href="adminDashboard.jsp">
+                <li class="nav-item active">
+                    <a class="nav-link" href="../adminDashboard.jsp">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>Dashboard</span></a>
                 </li>
@@ -80,23 +64,23 @@
 
                 <!-- Nav Item - Pages Collapse Menu -->
                 <li class="nav-item">
-                    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-                       aria-controls="collapseTwo">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                       aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-fw fa-cog"></i>
                         <span>Manage</span>
                     </a>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
-                         data-parent="#accordionSidebar">
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <% if (Character.compare(level, 'A') == 0) { %>
-                            <a class="collapse-item" href="staff.jsp">Staff</a>
+                            <a class="collapse-item" href="../staff.jsp">Staff</a>
                             <% } %>
-                            <a class="collapse-item" href="product.jsp">Product</a>
+                            <a class="collapse-item" href="../product.jsp">Product</a>
                         </div>
                     </div>
                 </li>
+
                 <!-- Nav Item - Utilities Collapse Menu -->
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                        aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-fw fa-wrench"></i>
@@ -105,13 +89,11 @@
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="customer.jsp">Customers</a>
-                            <a class="collapse-item" href="sales.jsp">Sales</a>
+                            <a class="collapse-item" href="../customer.jsp">Customers</a>
+                            <a class="collapse-item" href="../sales.jsp">Sales</a>
                         </div>
                     </div>
                 </li>
-                <!-- Divider -->
-                <hr class="sidebar-divider d-none d-md-block">          
             </ul>
             <!-- End of Sidebar -->
 
@@ -130,7 +112,7 @@
                         </button>
 
                         <!-- Topbar Search -->
-                        <form method="get" action="search.jsp"
+                        <form method="get" action="../search.jsp"
                             class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                             <div class="input-group">
                                 <input type="text" class="form-control bg-light border-0 small" name="id" placeholder="Search for..."
@@ -168,7 +150,8 @@
                                         </div>
                                     </form>
                                 </div>
-                            </li>                         
+                            </li>
+
                             <div class="topbar-divider d-none d-sm-block"></div>
 
                             <!-- Nav Item - User Information -->
@@ -182,11 +165,10 @@
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="profile.jsp">
+                                    <a class="dropdown-item" href="../profile.jsp">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Profile
                                     </a>
-
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="http://localhost:8080/E-commerce-Assignment-GUI/Logout" data-toggle="modal" data-target="#logoutModal">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -200,107 +182,68 @@
                     </nav>
                     <!-- End of Topbar -->
 
-                    <!-- Begin Page Content -->
-                    <div class="container-fluid">
+        <div class="container">
 
-                        <!-- Page Heading -->
-                        <h1 class="h3 mb-4 text-gray-800">Customers</h1>
-                        <div class="content">
-                            <table class="table table-striped table-bordered">
-                                <tr><td>Username</td><td>Registration Date</td></tr>
-                                <%
-                                while (rs.next()) {
-                                Blob pic;
-                                pic = rs.getBlob("photo");
-                
-                                if (pic != null) {
-
-                                InputStream inputStream = pic.getBinaryStream();
-
-                                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                                byte[] buffer = new byte[4096];
-                                int bytesRead = -1;
-
-                                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                                outputStream.write(buffer, 0, bytesRead);
-                                }
-
-                                byte[] imageBytes = outputStream.toByteArray();
-                                base64Image = Base64.getEncoder().encodeToString(imageBytes);
-                                }
-                                %>
-                                <tr><td><img width="50" height="50" src="data:image/jpg;base64,<%= base64Image %>">
-                                    <a href="viewCustomer.jsp?id=<%= rs.getString("id") %>"><%= rs.getString("id") %></a></td>
-                                    <td><%= rs.getString("regDate") %></td></tr>
-                                <%
-                                } } catch (Exception e) {
-                                e.printStackTrace();
-                                } 
-                                %>
-                            </table>
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <!-- Nested Row within Card Body -->
+                    <div class="p-5">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">Create new staff!</h1>
                         </div>
+                        <form method="post" action="http://localhost:8080/E-commerce-Assignment-GUI/signUpStaff" enctype="multipart/form-data" >
+                            <div class="form-group">
+                                <input type="text" id="id" name="id" class="form-control" placeholder="Username" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control" name="email" id="email"
+                                    placeholder="Email Address" required> 
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="phoneNumber" id="phoneNumber"
+                                    placeholder="Contact Number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="birthDate">Birthday:</label>
+                                <input type="date" id="birthDate" name="birthDate" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" name="gender" id="gender" required>
+                                    <option value="">Select your Gender</option>
+                                    <option value="M">Male</option>
+                                    <option value="F">Female</option>
+                                    <option value="N">Not Specified</option>
+                                </select>
+                            </div>
 
+                            <div class="form-group">
+                                <input type="password" class="form-control" name="password" id="password"
+                                    placeholder="Password" required>
+                            </div>
 
+                            <div class="mb-3">
+                                <input type="file" class="form-control-file" name="photo" id="photo" accept="image/*" required>
+                            </div>
 
-
-
-                    </div>
-                    <!-- /.container-fluid -->
-
-                </div>
-                <!-- End of Main Content -->
-
-                <!-- Footer -->
-                <footer class="sticky-footer bg-white">
-                    <div class="container my-auto">
-                        <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; Your Website 2020</span>
-                        </div>
-                    </div>
-                </footer>
-                <!-- End of Footer -->
-
-            </div>
-            <!-- End of Content Wrapper -->
-
-        </div>
-        <!-- End of Page Wrapper -->
-
-        <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
-
-        <!-- Logout Modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="http://localhost:8080/E-commerce-Assignment-GUI/Logout">Logout</a>
+                            <input type="submit" value="Submit" class="btn btn-primary btn-user btn-block">
+                        </form>
+                        <hr>
                     </div>
                 </div>
             </div>
+        </div>  
         </div>
 
         <!-- Bootstrap core JavaScript-->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="../vendor/jquery/jquery.min.js"></script>
+        <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
         <!-- Core plugin JavaScript-->
-        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+        <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
         <!-- Custom scripts for all pages-->
-        <script src="js/sb-admin-2.min.js"></script>
+        <script src="../js/sb-admin-2.min.js"></script>
 
     </body>
 
-</html>
+    </html>

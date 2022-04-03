@@ -37,8 +37,8 @@
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        int count = 0, count3 = 0;
-        ResultSet rs = null, rs2 = null, rs3 = null, rs4 = null, rs5 = null, rs6 = null;
+        int count = 0, count3 = 0, count4 = 0, ratingCount = 0;
+        ResultSet rs = null, rs2 = null, rs3 = null, rs4 = null, rs5 = null, rs6 = null, rs7 = null, rs8 = null;
         HttpSession httpSession = request.getSession();
         String username = (String)(httpSession.getAttribute("username"));
         try {
@@ -48,16 +48,25 @@
             PreparedStatement ps3 = con.prepareStatement("select * from comment where prod_id = ?");
             PreparedStatement ps4 = con.prepareStatement("select * from orders where id = ?");
             PreparedStatement ps5 = con.prepareStatement("select * from order_item where order_id = ?");
+            PreparedStatement ps6 = con.prepareStatement("select * from comment where prod_id = ? and id = ?");
+            PreparedStatement ps7 = con.prepareStatement("select * from reply where comment_id = ?");
 
             ps.setString(1, prodId);
             ps2.setString(1, username);
             ps3.setString(1, prodId);
             ps4.setString(1, username);
+            ps6.setString(1, prodId);
+            ps6.setString(2, username);
             
             rs = ps.executeQuery();
             rs2 = ps2.executeQuery();
             rs4 = ps3.executeQuery();
             rs5 = ps4.executeQuery();
+            rs7 = ps6.executeQuery();
+            
+            while(rs7.next()) {
+                count4++;
+            }
             
             while(rs2.next()) {
                 count++;
@@ -164,20 +173,31 @@
                        ps5.setInt(1, rs5.getInt("order_id"));
                        rs6 = ps5.executeQuery();
                             while(rs6.next()) {
-                                if(rs6.getInt("prod_id") == prod && count3 == 0) { count3++; %>
+                                if(rs6.getInt("prod_id") == prod && count3 == 0 && count4 == 0) { count3++; %>
                                     
                                     <tr><form class="form-group" method="get" action="http://localhost:8080/E-commerce-Assignment-GUI/submitComment">
-                                        <td><input style="width: 100%;" type="text" name="comment" placeholder="Leave your comment..." required></td><td><input type="submit" value="Submit"></td>
+                                        <td><input type="text" name="comment" placeholder="Leave your comment..." required></td><td>Rating (1-5) : <input type="number" min="1" max="5" name="rating" placeholder="Rating(1-5)" required></td><td><input type="submit" value="Submit"></td>
                                         <input type="hidden" value="<%= prod %>" name="prod">
                                     </tr></form>
                                     
                                 <% }
                             }
                     }%>
-                        <% while(rs4.next()) { %>
+                        <% while(rs4.next()) { 
+                        ps7.setInt(1, rs4.getInt("comment_id"));
+                        rs8 = ps7.executeQuery();%>
                         <table class="table table-bordered table-striped mb-4">
                     <tr><td><%= rs4.getString("id") %></td><td><%= rs4.getString("comment_time") %></td></tr>
-                    <tr><td colspan="2"><%= rs4.getString("comment_text") %></td></tr>         
+                    <tr><td><%= rs4.getString("comment_text") %></td><td><% while(ratingCount < rs4.getInt("rating")) { ratingCount++;%><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+  <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+</svg> <%}%></td></tr>      
+                    <% if(rs8.next()) { %>
+                    <tr><td><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-reply" viewBox="0 0 16 16">
+  <path d="M6.598 5.013a.144.144 0 0 1 .202.134V6.3a.5.5 0 0 0 .5.5c.667 0 2.013.005 3.3.822.984.624 1.99 1.76 2.595 3.876-1.02-.983-2.185-1.516-3.205-1.799a8.74 8.74 0 0 0-1.921-.306 7.404 7.404 0 0 0-.798.008h-.013l-.005.001h-.001L7.3 9.9l-.05-.498a.5.5 0 0 0-.45.498v1.153c0 .108-.11.176-.202.134L2.614 8.254a.503.503 0 0 0-.042-.028.147.147 0 0 1 0-.252.499.499 0 0 0 .042-.028l3.984-2.933zM7.8 10.386c.068 0 .143.003.223.006.434.02 1.034.086 1.7.271 1.326.368 2.896 1.202 3.94 3.08a.5.5 0 0 0 .933-.305c-.464-3.71-1.886-5.662-3.46-6.66-1.245-.79-2.527-.942-3.336-.971v-.66a1.144 1.144 0 0 0-1.767-.96l-3.994 2.94a1.147 1.147 0 0 0 0 1.946l3.994 2.94a1.144 1.144 0 0 0 1.767-.96v-.667z"/>
+                    </svg>Admin</td><td><%= rs8.getString("reply_time") %></td></tr>
+                    <tr><td colspan="2"><%= rs8.getString("reply_text") %></td></tr>
+
+                    <% } %>
                         </table>
                     <%  } %>
                 </table>

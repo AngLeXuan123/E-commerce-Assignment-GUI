@@ -205,7 +205,7 @@
                         <!-- Page Heading -->
                         <h1 class="h3 mb-4 text-gray-800">Sales</h1>
                         <div class="content">
-                            <table class="table">
+                            <table class="table table-striped table-bordered">
                                 <tr><td>Order Time</td><td>Username</td><td>Total Amount</td></tr>
                                 <%
                                 while (rs.next()) {                                

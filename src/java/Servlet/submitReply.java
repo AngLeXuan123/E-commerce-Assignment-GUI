@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author user
  */
-public class submitComment extends HttpServlet {
+public class submitReply extends HttpServlet {
 
     private Connection conn;
     private PreparedStatement pstmt;
@@ -46,15 +46,15 @@ public class submitComment extends HttpServlet {
         
         HttpSession httpSession = request.getSession();
         String username = (String)httpSession.getAttribute("username");
-        String comment = request.getParameter("comment");
+        String reply = request.getParameter("reply");
+        String commentIdString = request.getParameter("id");
+        int commentId = Integer.parseInt(commentIdString);
         String prodIdString = request.getParameter("prod");
         int prodId = Integer.parseInt(prodIdString);
-        String ratingString = request.getParameter("rating");
-        int rating = Integer.parseInt(ratingString);
-        
+      
         try {
-            submitComment(comment, prodId, username, rating);
-            response.sendRedirect("main/customer/productDetails.jsp?prod=" + prodId);
+            submitComment(reply, commentId, username);
+            response.sendRedirect("main/adminT/viewProduct.jsp?id=" + prodId);
         } catch (SQLException ex) {
             Logger.getLogger(signUpServlets.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -64,17 +64,16 @@ public class submitComment extends HttpServlet {
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             conn = DriverManager.getConnection(host, user, password);
-            pstmt = conn.prepareStatement("INSERT INTO COMMENT(COMMENT_TEXT, PROD_ID, ID, RATING) VALUES(?, ?, ?, ?)");
+            pstmt = conn.prepareStatement("INSERT INTO REPLY(REPLY_TEXT, COMMENT_ID, ID) VALUES(?, ?, ?)");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    private void submitComment(String comment, int prodId, String id, int rating) throws SQLException {
-        pstmt.setString(1, comment);
-        pstmt.setInt(2, prodId);
+    private void submitComment(String reply, int commentId, String id) throws SQLException {
+        pstmt.setString(1, reply);
+        pstmt.setInt(2, commentId);
         pstmt.setString(3, id);
-         pstmt.setInt(4, rating);
         pstmt.executeUpdate();
     }
 

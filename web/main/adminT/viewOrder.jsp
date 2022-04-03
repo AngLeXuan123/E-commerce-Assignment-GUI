@@ -211,7 +211,7 @@
                         <!-- Page Heading -->
                         <h1 class="h3 mb-4 text-gray-800">Order</h1>
                         <div class="content">
-                            <table class="table">
+                            <table class="table table-bordered">
                                 <tr><td>Product</td><td>Quantity</td><td>Price (each)</td></tr>
                                 <%
                                     while (rs.next()) {
@@ -244,14 +244,14 @@
                                         <%
                                                } if(rs3.next()) {
                                         %>
-                               <tr><td>Order ID </td><td><%= rs3.getInt("order_id") %> </td></tr>
-                                <tr><td>Address </td><td><%= rs3.getString("order_address") %> </td></tr>
-                                <tr><td>Phone Number </td><td><%= rs3.getString("phoneNum") %> </td></tr>
-                                <tr><td>Recipient Name </td><td><%= rs3.getString("recipientname") %> </td></tr>
-                                <tr><td>Username </td><td><a href="viewCustomer.jsp?id=<%= rs3.getString("id") %>"><%= rs3.getString("id") %></td></tr>
-                                <tr><td>Card Number </td><td><%= rs3.getString("card_number") %> </td></tr> 
-                                <tr><td>Expiry Date </td><td><%= rs3.getInt("expiry_year")/rs3.getInt("expiry_month") %> </td></tr> 
-                                <tr><td>Total Amount </td><td>RM <%= rs3.getDouble("total_amount") %> </td></tr> 
+                               <tr><td>Order ID </td><td colspan="2"><%= rs3.getInt("order_id") %> </td></tr>
+                                <tr><td>Address </td><td colspan="2"><%= rs3.getString("order_address") %> </td></tr>
+                                <tr><td>Phone Number </td><td colspan="2"><%= rs3.getString("phoneNum") %> </td></tr>
+                                <tr><td>Recipient Name </td><td colspan="2"><%= rs3.getString("recipientname") %> </td></tr>
+                                <tr><td>Username </td><td colspan="2"><a href="viewCustomer.jsp?id=<%= rs3.getString("id") %>"><%= rs3.getString("id") %></td></tr>
+                                <tr><td>Card Number </td><td colspan="2"><%= rs3.getString("card_number") %> </td></tr> 
+                                <tr><td>Expiry Date </td><td colspan="2"><%= rs3.getInt("expiry_year")/rs3.getInt("expiry_month") %> </td></tr> 
+                                <tr><td>Total Amount </td><td colspan="2">RM <%= rs3.getDouble("total_amount") %> </td></tr> 
                                 <tr><td><form action="http://localhost:8080/E-commerce-Assignment-GUI/updateStatus" method="post">
                                     <div class="form-group">
                                         <label for="category">Order Status</label></td><td>

@@ -206,9 +206,9 @@
 
                         <!-- Page Heading -->
                         <h1 class="h3 mb-4 text-gray-800">Products</h1>
-                        <a class="btn btn-outline-dark mt-auto" href="forms/signUpProduct.html">Create new product</a>
-                        <div class="content">
-                            <table>
+                        <a class="btn btn-outline-dark mt-auto" href="forms/signUpProduct.jsp">Create new product</a>
+                        <div class="content"><br>
+                            <table class="table table-striped table-bordered">
                                 <%
                                 while (rs.next()) {
                                 Blob pic;
