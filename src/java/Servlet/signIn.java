@@ -62,7 +62,6 @@ public class signIn extends HttpServlet {
                     httpSession.setAttribute("photo", base64Image);
                 }
                 
-                out.println("hi");
                 httpSession.setAttribute("regDate", regDate);
                 httpSession.setAttribute("gender", gender);
                 httpSession.setAttribute("birthDate", birthDate);
