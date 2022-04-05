@@ -56,8 +56,7 @@ public class checkout extends HttpServlet {
 
         try {
             int orderId = 0;
-            
-            pstmt = conn.prepareStatement("INSERT INTO ORDERS (ORDER_ADDRESS, PHONENUM, RECIPIENTNAME, ORDER_STATUS, ID, CARD_NUMBER, EXPIRY_MONTH, EXPIRY_YEAR, CARD_CCV, TOTAL_AMOUNT, ORDER_TIME) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)", Statement.RETURN_GENERATED_KEYS);  
+
             pstmt.setString(1, address);
             pstmt.setString(2, phoneNum);
             pstmt.setString(3, repName);
@@ -72,28 +71,32 @@ public class checkout extends HttpServlet {
             rs3 = pstmt.getGeneratedKeys();
             rs3.next();
             orderId = rs3.getInt(1);       
-
-            pstmt2 = conn.prepareStatement("SELECT * FROM CART_ITEM WHERE ID = ?");
+            conn.commit();
+            
             pstmt2.setString(1, username);
             rs = pstmt2.executeQuery();
+            conn.commit();
 
             while(rs.next()) {
                 pstmt3 = conn.prepareStatement("UPDATE PRODUCT SET PROD_QUANTITY = PROD_QUANTITY - ? WHERE PROD_ID = ?");
-                pstmt3.setInt(1, Integer.parseInt(rs.getString("quantity")));
-                pstmt3.setInt(2, Integer.parseInt(rs.getString("prod_id")));
+                pstmt3.setInt(1, rs.getInt("quantity"));
+                pstmt3.setInt(2, rs.getInt("prod_id"));
                 pstmt3.executeUpdate();
+                pstmt3.close();
+                conn.commit();
 
                 pstmt4 = conn.prepareStatement("INSERT INTO ORDER_ITEM (ORDER_ID, PROD_ID, ORDER_QUANTITY) VALUES (?, ?, ?)");
                 pstmt4.setInt(1, orderId);
                 pstmt4.setInt(2, Integer.parseInt(rs.getString("prod_id")));
                 pstmt4.setInt(3, Integer.parseInt(rs.getString("quantity")));
                 pstmt4.executeUpdate();
-
-                pstmt5 = conn.prepareStatement("DELETE FROM CART_ITEM WHERE ID = ? AND PROD_ID = ?");
-                pstmt5.setString(1, rs.getString("id"));
-                pstmt5.setInt(2, Integer.parseInt(rs.getString("prod_id")));
-                pstmt5.executeUpdate();
+                pstmt4.close();
+                conn.commit();
             }
+            
+            pstmt5.setString(1, username);
+            pstmt5.executeUpdate();
+            conn.commit();
 
             response.sendRedirect("main/customer/order.jsp");
         } catch (SQLException ex) {
@@ -104,7 +107,12 @@ public class checkout extends HttpServlet {
     private void initializeJdbc() {
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
-            conn = DriverManager.getConnection(host, user, password);  
+            conn = DriverManager.getConnection(host, user, password); 
+            pstmt = conn.prepareStatement("INSERT INTO ORDERS (ORDER_ADDRESS, PHONENUM, RECIPIENTNAME, ORDER_STATUS, ID, CARD_NUMBER, EXPIRY_MONTH, EXPIRY_YEAR, CARD_CCV, TOTAL_AMOUNT, ORDER_TIME) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)", Statement.RETURN_GENERATED_KEYS);  
+            pstmt2 = conn.prepareStatement("SELECT * FROM CART_ITEM WHERE ID = ?");
+            
+            
+            pstmt5 = conn.prepareStatement("DELETE FROM CART_ITEM WHERE ID = ?");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

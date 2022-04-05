@@ -76,7 +76,7 @@ public class editProfile extends HttpServlet {
             }
 
             if (errorCount == 0) {
-                editAccount(pass, email, phoneNumber, input, username);
+                editProfile(pass, email, phoneNumber, input, username);
                 httpSession.setAttribute("password", pass);
                 httpSession.setAttribute("email", email);
                 httpSession.setAttribute("phoneNumber", phoneNumber);
@@ -104,7 +104,7 @@ public class editProfile extends HttpServlet {
         }
     }
 
-    private void editAccount(String pass, String email, String phoneNumber, InputStream photo, String username) throws SQLException {
+    private void editProfile(String pass, String email, String phoneNumber, InputStream photo, String username) throws SQLException {
         pstmt.setString(1, pass);
         pstmt.setString(2, email);
         pstmt.setString(3, phoneNumber);

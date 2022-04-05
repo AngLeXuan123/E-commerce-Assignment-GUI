@@ -33,17 +33,11 @@ public class deleteStaff extends HttpServlet {
        
         try {
             String username = request.getParameter("id");
-            deleteAccount(username);
+            deleteStaff(username);
             response.sendRedirect("main/adminT/staff.jsp");
         } catch (SQLException ex) {
             Logger.getLogger(deleteStaff.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-            
-                
-       
-                
-                
+        }         
     }
 
     private void initializeJdbc() {
@@ -56,7 +50,7 @@ public class deleteStaff extends HttpServlet {
         }
     }
 
-    private void deleteAccount(String username) throws SQLException {
+    private void deleteStaff(String username) throws SQLException {
         pstmt.setString(1, username);
         pstmt.executeUpdate();
     }

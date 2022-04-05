@@ -1,17 +1,11 @@
 package Servlet;
 
-import java.time.*;
-import java.util.Date;
 import java.io.*;
 import java.sql.*;
-import java.time.format.DateTimeFormatter;
-import java.util.Base64;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 
 public class updateStatus extends HttpServlet {
 

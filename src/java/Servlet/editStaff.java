@@ -45,10 +45,6 @@ public class editStaff extends HttpServlet {
         Part filePart = request.getPart("photo");
         
         inputStream = filePart.getInputStream();
-
-        
-       
-
         try {
             if (pass.length() == 0 || email.length() == 0 || phoneNumber.length() == 0) {
                 out.println("Please fill out all the fields!");
@@ -56,7 +52,7 @@ public class editStaff extends HttpServlet {
             }
 
             if (errorCount == 0) {
-                editAccount(pass, email, phoneNumber, inputStream, username);
+                editStaff(pass, email, phoneNumber, inputStream, username);
                 response.sendRedirect("main/adminT/staff.jsp");
             }
         } catch (SQLException ex) {
@@ -74,7 +70,7 @@ public class editStaff extends HttpServlet {
         }
     }
 
-    private void editAccount(String pass, String email, String phoneNumber, InputStream photo, String username) throws SQLException {
+    private void editStaff(String pass, String email, String phoneNumber, InputStream photo, String username) throws SQLException {
         pstmt.setString(1, pass);
         pstmt.setString(2, email);
         pstmt.setString(3, phoneNumber);

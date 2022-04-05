@@ -32,7 +32,7 @@
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
             PreparedStatement ps = con.prepareStatement("select * from product");
             PreparedStatement ps2 = con.prepareStatement("select * from cart_item where id = ?");
-            PreparedStatement ps3 = con.prepareStatement("select * from orders where id = ?");
+            PreparedStatement ps3 = con.prepareStatement("select * from orders where id = ? order by ORDER_TIME ");
             ps2.setString(1, username);
             ps3.setString(1, username);
             

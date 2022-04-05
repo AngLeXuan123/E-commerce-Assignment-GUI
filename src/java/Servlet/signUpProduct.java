@@ -57,26 +57,25 @@ public class signUpProduct extends HttpServlet {
 
             if (errorCount == 0) {
                 try {
-                    storeAccount(name, desc, quantity, regDate, inputStream, brand, category, price);
+                    signUpAccount(name, desc, quantity, regDate, inputStream, brand, category, price);
                     response.sendRedirect("main/adminT/product.jsp");
                 } catch (SQLException ex) {
                     Logger.getLogger(signUpServlets.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        
 }
 
 private void initializeJdbc() {
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             conn = DriverManager.getConnection(host, user, password);
-            pstmt = conn.prepareStatement("INSERT INTO PRODUCT (PROD_NAME, PROD_DESC, PROD_QUANTITY, PROD_RELEASE, PROD_PHOTO, PROD_BRAND, PROD_CATEGORY, PROD_PRICE) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+            pstmt = conn.prepareStatement("INSERT INTO PRODUCT (PROD_NAME, PROD_DESC, PROD_QUANTITY, PROD_RELEASE, PROD_PHOTO, PROD_BRAND, PROD_CATEGORY, PROD_PRICE) VALUES(?, ?, ?, ?, ?, upper(?), ?, ?)");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    private void storeAccount(String name, String desc, int quantity, java.sql.Date regDate, InputStream photo, String brand, String category, double price) throws SQLException {
+    private void signUpAccount(String name, String desc, int quantity, java.sql.Date regDate, InputStream photo, String brand, String category, double price) throws SQLException {
         pstmt.setString(1, name);
         pstmt.setString(2, desc);;
         pstmt.setInt(3, quantity);

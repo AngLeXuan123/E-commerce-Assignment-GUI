@@ -33,7 +33,7 @@ public class deleteProduct extends HttpServlet {
        
         try {
             String username = request.getParameter("id");
-            deleteAccount(username);
+            deleteProduct(username);
             response.sendRedirect("main/adminT/product.jsp");
         } catch (SQLException ex) {
             Logger.getLogger(deleteStaff.class.getName()).log(Level.SEVERE, null, ex);
@@ -51,7 +51,7 @@ public class deleteProduct extends HttpServlet {
         }
     }
 
-    private void deleteAccount(String id) throws SQLException {
+    private void deleteProduct(String id) throws SQLException {
         pstmt.setString(1, id);
         pstmt.executeUpdate();
     }

@@ -64,7 +64,7 @@ public class submitComment extends HttpServlet {
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             conn = DriverManager.getConnection(host, user, password);
-            pstmt = conn.prepareStatement("INSERT INTO COMMENT(COMMENT_TEXT, PROD_ID, ID, RATING) VALUES(?, ?, ?, ?)");
+            pstmt = conn.prepareStatement("INSERT INTO COMMENT(COMMENT_TEXT, PROD_ID, ID, RATING) VALUES(?, ?, ?)");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

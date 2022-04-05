@@ -2,7 +2,11 @@
 <html lang="en">
 
     <head>
-
+        <%@ page import="java.io.*" %>
+        <%@ page import="javax.servlet.*" %>
+        <%@ page import="javax.servlet.http.*" %>
+        <%@ page import="java.sql.*" %>
+        <%@ page import="java.util.*" %>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -23,7 +27,40 @@
     </head>
 
     <body id="page-top">
-        <% HttpSession httpSession = request.getSession();
+        <% try {
+           Class.forName("org.apache.derby.jdbc.ClientDriver");
+           } catch (ClassNotFoundException e) {
+           e.printStackTrace();
+           }
+        
+           ResultSet rs = null, rs2 = null, rs3 = null, rs4 = null;
+           int count = 0, count2 = 0, count3 = 0;
+           double total = 0;
+           Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/assignmentdb", "nbuser", "nbuser");
+           PreparedStatement ps = con.prepareStatement("SELECT * FROM orders WHERE MONTH(order_time)=MONTH(CURRENT_DATE)");
+           PreparedStatement ps2 = con.prepareStatement("SELECT * FROM account WHERE MONTH(regDate)=MONTH(CURRENT_DATE) AND level = 'C'");
+           PreparedStatement ps3 = con.prepareStatement("SELECT * FROM order_item WHERE order_id = ?"); 
+           PreparedStatement ps4 = con.prepareStatement("SELECT p.prod_brand, count(o.order_item_id) FROM order_item o, product p WHERE p.prod_id = o.prod_id GROUP BY p.prod_brand"); 
+           rs = ps.executeQuery();
+           rs2 = ps2.executeQuery();
+           rs4 = ps4.executeQuery();
+           while(rs.next()) {
+               count++;
+               total = total + rs.getDouble("total_amount");
+               
+               ps3.setInt(1, rs.getInt("order_id"));
+               rs3 = ps3.executeQuery();
+               
+               while(rs3.next()) {
+                   count3 = count3 + rs3.getInt("order_quantity");
+               }
+           }
+           
+           while(rs2.next()) {
+               count2++;
+           }
+           
+           HttpSession httpSession = request.getSession();
            String username = (String)(httpSession.getAttribute("username"));
            String photo = (String)(httpSession.getAttribute("photo"));
            String levelString = (String)(httpSession.getAttribute("level"));
@@ -185,13 +222,6 @@
                     <!-- Begin Page Content -->
                     <div class="container-fluid">
 
-                        <!-- Page Heading -->
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                    class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-                        </div>
-
                         <!-- Content Row -->
                         <div class="row">
 
@@ -202,8 +232,8 @@
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                    Earnings (Monthly)</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                                    Total orders (Monthly)</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800"><%= count %></div>
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -220,8 +250,8 @@
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                    Earnings (Annual)</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                                    Total sales (Monthly)</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">RM <%= String.format("%.2f", total) %></div>
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -237,20 +267,9 @@
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
-                                                </div>
-                                                <div class="row no-gutters align-items-center">
-                                                    <div class="col-auto">
-                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                                    </div>
-                                                    <div class="col">
-                                                        <div class="progress progress-sm mr-2">
-                                                            <div class="progress-bar bg-info" role="progressbar"
-                                                                 style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                                 aria-valuemax="100"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                    New Customers (Monthly)</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800"><%= count2 %></div>
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
@@ -267,90 +286,12 @@
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                    Pending Requests</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                                    Products Sold (Monthly)</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800"><%= count3 %></div>
                                             </div>
                                             <div class="col-auto">
-                                                <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                <i class="fas fa-clipboard fa-2x text-gray-300"></i>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Content Row -->
-
-                        <div class="row">
-
-                            <!-- Area Chart -->
-                            <div class="col-xl-8 col-lg-7">
-                                <div class="card shadow mb-4">
-                                    <!-- Card Header - Dropdown -->
-                                    <div
-                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                        <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
-                                        <div class="dropdown no-arrow">
-                                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                                 aria-labelledby="dropdownMenuLink">
-                                                <div class="dropdown-header">Dropdown Header:</div>
-                                                <a class="dropdown-item" href="#">Action</a>
-                                                <a class="dropdown-item" href="#">Another action</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Something else here</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Card Body -->
-                                    <div class="card-body">
-                                        <div class="chart-area">
-                                            <canvas id="myAreaChart"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Pie Chart -->
-                            <div class="col-xl-4 col-lg-5">
-                                <div class="card shadow mb-4">
-                                    <!-- Card Header - Dropdown -->
-                                    <div
-                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                        <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
-                                        <div class="dropdown no-arrow">
-                                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                                 aria-labelledby="dropdownMenuLink">
-                                                <div class="dropdown-header">Dropdown Header:</div>
-                                                <a class="dropdown-item" href="#">Action</a>
-                                                <a class="dropdown-item" href="#">Another action</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Something else here</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Card Body -->
-                                    <div class="card-body">
-                                        <div class="chart-pie pt-4 pb-2">
-                                            <canvas id="myPieChart"></canvas>
-                                        </div>
-                                        <div class="mt-4 text-center small">
-                                            <span class="mr-2">
-                                                <i class="fas fa-circle text-primary"></i> Direct
-                                            </span>
-                                            <span class="mr-2">
-                                                <i class="fas fa-circle text-success"></i> Social
-                                            </span>
-                                            <span class="mr-2">
-                                                <i class="fas fa-circle text-info"></i> Referral
-                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -366,39 +307,17 @@
                                 <!-- Project Card Example -->
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
+                                        <h6 class="m-0 font-weight-bold text-primary">Products sold based on brands</h6>
                                     </div>
                                     <div class="card-body">
-                                        <h4 class="small font-weight-bold">Server Migration <span
-                                                class="float-right">20%</span></h4>
+                                        <% while(rs4.next()) { %>
+                                        <h4 class="small font-weight-bold"><%= rs4.getString(1) %><span
+                                                class="float-right"><%= rs4.getInt(2) %></span></h4>
                                         <div class="progress mb-4">
-                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 20%"
-                                                 aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: <%= (double)rs4.getInt(2) / count3 * 100.00 %>%"
+                                                 aria-valuenow="<%= rs4.getInt(2)%>" aria-valuemin="0" aria-valuemax="<%= count3 %>"></div>
                                         </div>
-                                        <h4 class="small font-weight-bold">Sales Tracking <span
-                                                class="float-right">40%</span></h4>
-                                        <div class="progress mb-4">
-                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 40%"
-                                                 aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <h4 class="small font-weight-bold">Customer Database <span
-                                                class="float-right">60%</span></h4>
-                                        <div class="progress mb-4">
-                                            <div class="progress-bar" role="progressbar" style="width: 60%"
-                                                 aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <h4 class="small font-weight-bold">Payout Details <span
-                                                class="float-right">80%</span></h4>
-                                        <div class="progress mb-4">
-                                            <div class="progress-bar bg-info" role="progressbar" style="width: 80%"
-                                                 aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <h4 class="small font-weight-bold">Account Setup <span
-                                                class="float-right">Complete!</span></h4>
-                                        <div class="progress">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
-                                                 aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
+                                        <% } %>
                                     </div>
                                 </div>
 

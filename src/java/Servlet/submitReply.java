@@ -53,7 +53,7 @@ public class submitReply extends HttpServlet {
         int prodId = Integer.parseInt(prodIdString);
       
         try {
-            submitComment(reply, commentId, username);
+            submitReply(reply, commentId, username);
             response.sendRedirect("main/adminT/viewProduct.jsp?id=" + prodId);
         } catch (SQLException ex) {
             Logger.getLogger(signUpServlets.class.getName()).log(Level.SEVERE, null, ex);
@@ -70,7 +70,7 @@ public class submitReply extends HttpServlet {
         }
     }
 
-    private void submitComment(String reply, int commentId, String id) throws SQLException {
+    private void submitReply(String reply, int commentId, String id) throws SQLException {
         pstmt.setString(1, reply);
         pstmt.setInt(2, commentId);
         pstmt.setString(3, id);

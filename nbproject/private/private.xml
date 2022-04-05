@@ -4,13 +4,28 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/web/main/customer/index.jsp</file>
-            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/submitComment.java</file>
             <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/web/main/customer/cart.jsp</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/Logout.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/editProduct.java</file>
             <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/submitReply.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/addQuantity.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/signIn.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/deleteStaff.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/addToCart.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/signUpStaff.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/checkout.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/minusQuantity.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/submitComment.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/editProfile.java</file>
             <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/deleteReply.java</file>
             <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/web/main/customer/productDetails.jsp</file>
             <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/deleteComment.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/signUpProduct.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/signUpServlets.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/editStaff.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/updateStatus.java</file>
             <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/src/java/Servlet/deleteProduct.java</file>
+            <file>file:/C:/Users/user/Documents/GitHub/E-commerce-Assignment-GUI/web/main/customer/order.jsp</file>
         </group>
     </open-files>
 </project-private>

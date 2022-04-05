@@ -55,6 +55,7 @@ public class signUpServlets extends HttpServlet {
         InputStream inputStream = null;
 
         Part filePart = request.getPart("photo");
+        
         if (filePart != null) {
             System.out.println(filePart.getName());
             System.out.println(filePart.getSize());
@@ -70,9 +71,8 @@ public class signUpServlets extends HttpServlet {
 
             if (errorCount == 0) {
                 try {
-                    storeAccount(id, pass, gender, birthDate, regDate, email, phoneNumber, level, inputStream);
-                    out.println("Congratulation " + id + ", your registration is successful! \n");
-                    out.print("<a href='main/adminT/forms/login.jsp'>Go back to login page -></a>");
+                    signUpServlets(id, pass, gender, birthDate, regDate, email, phoneNumber, level, inputStream);
+                    response.sendRedirect("main/login.jsp");
                 } catch (SQLException ex) {
                     Logger.getLogger(signUpServlets.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -90,7 +90,7 @@ private void initializeJdbc() {
         }
     }
 
-    private void storeAccount(String id, String pass, char gender, java.sql.Date birthDate, java.sql.Date regDate, String email, String phoneNumber, char level, InputStream photo) throws SQLException {
+    private void signUpServlets(String id, String pass, char gender, java.sql.Date birthDate, java.sql.Date regDate, String email, String phoneNumber, char level, InputStream photo) throws SQLException {
         pstmt.setString(1, id);
         pstmt.setString(2, pass);
         pstmt.setString(3, String.valueOf(gender));

@@ -241,7 +241,7 @@
                               </select>
                         </div> 
                         <div class="form-group">
-                            <input type="file" class="form-control" name="photo" id="photo" accept="image/*" required>
+                            <input type="file" class="form-control-files" name="photo" id="photo" accept="image/*" required>
                         </div>
                         <input type="hidden" value="<%= id %>" name="id" id="id" />
                         <input type="submit" value="Confirm" class="btn btn-primary btn-user btn-block">
