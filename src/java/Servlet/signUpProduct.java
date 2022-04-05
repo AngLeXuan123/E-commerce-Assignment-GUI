@@ -69,7 +69,7 @@ private void initializeJdbc() {
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             conn = DriverManager.getConnection(host, user, password);
-            pstmt = conn.prepareStatement("INSERT INTO PRODUCT (PROD_NAME, PROD_DESC, PROD_QUANTITY, PROD_RELEASE, PROD_PHOTO, PROD_BRAND, PROD_CATEGORY, PROD_PRICE) VALUES(?, ?, ?, ?, ?, upper(?), ?, ?)");
+            pstmt = conn.prepareStatement("INSERT INTO PRODUCT (PROD_NAME, PROD_DESC, PROD_QUANTITY, PROD_RELEASE, PROD_PHOTO, PROD_BRAND, PROD_CATEGORY, PROD_PRICE) VALUES(?, ?, ?, ?, ?, upper(?), upper(?), ?)");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

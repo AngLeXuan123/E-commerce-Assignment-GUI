@@ -68,7 +68,7 @@ public class editProduct extends HttpServlet {
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             conn = DriverManager.getConnection(host, user, password);
-            pstmt = conn.prepareStatement("update product set prod_name = ?, prod_desc = ?, prod_quantity = ?, prod_photo = ?, prod_brand = upper(?), prod_category = ?, prod_price = ? where prod_id = ?");
+            pstmt = conn.prepareStatement("update product set prod_name = ?, prod_desc = ?, prod_quantity = ?, prod_photo = ?, prod_brand = upper(?), prod_category = upper(?), prod_price = ? where prod_id = ?");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

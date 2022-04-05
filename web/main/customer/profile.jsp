@@ -104,7 +104,7 @@
            String phoneNumber = (String)(httpSession.getAttribute("phoneNumber"));
            String photo = (String)(httpSession.getAttribute("photo"));
         %>
-        <div class="">
+        <div class="container-fluid">
                 
                 <table class="table  table-bordered table-striped mb-4">
                     <tr><td colspan="2" align="center" ><img src="data:image/jpg;base64,<%= photo %>" width="240" height="300"/></td></tr> 
